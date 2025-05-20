@@ -11,7 +11,7 @@ import com.concreteware.models.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            FileInputStream serviceAccount = new FileInputStream("serviceAccountKey.json");
+            FileInputStream serviceAccount = new FileInputStream("ServiceAccountKey.json");
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -36,8 +36,8 @@ public class Main {
 
         // ======= CLIENTE =======
         Cliente cliente = new Cliente(
-                "cliente01",
-                "11223344",
+                "cliente02",
+                "11323344",
                 "Carlos Cliente",
                 "cliente@obras.com",
                 "CLIENTE",

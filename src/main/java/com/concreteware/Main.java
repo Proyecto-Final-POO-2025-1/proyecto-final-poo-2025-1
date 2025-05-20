@@ -11,7 +11,7 @@ import com.concreteware.models.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            FileInputStream serviceAccount = new FileInputStream("ServiceAccountKey.json");
+            FileInputStream serviceAccount = new FileInputStream("ClaveDeAcceso.json");
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))

@@ -6,6 +6,7 @@
 
 ## 🚀 Tecnologías
 
+
 - Java 21+
 - Firebase Realtime Database
 - Firebase Admin SDK
@@ -32,6 +33,7 @@ src/
 
 ---
 
+
 ## 🌳 Convención de ramas
 
 Consulta la estrategia de ramas en el archivo [`CONVENTION.md`](./CONVENTION.md)
@@ -39,6 +41,7 @@ Consulta la estrategia de ramas en el archivo [`CONVENTION.md`](./CONVENTION.md)
 ---
 
 ## 📬 Contacto
+
 
 Desarrollado por el equipo de **Concreteware UNAL**.  
 Para soporte técnico o solicitudes comerciales, contáctanos en: **info@concreteware.com**

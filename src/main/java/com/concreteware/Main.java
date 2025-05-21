@@ -1,52 +1,104 @@
 package com.concreteware;
+import com.concreteware.config.FirebaseInitializer;
+import com.google.firebase.database.DatabaseReference;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.*;
-import com.google.auth.oauth2.GoogleCredentials;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import com.concreteware.models.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException, InterruptedException {
-        // Inicializar Firebase
-        FileInputStream serviceAccount = new FileInputStream("ServiceAccountKey.json");
+    public static void main(String[] args) {
 
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://concreteware-default-rtdb.firebaseio.com")
-                .build();
 
-        FirebaseApp.initializeApp(options);
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("usuarios");
+        // ======= ADMIN =======
+        Usuario admin = new Usuario(
+                "admin01",
+                "12345678",
+                "Yaneth Admin",
+                "admin@concreteware.com",
+                "ADMIN",
+                true
+        );
 
-        // Crear usuario
-        Map<String, Object> nuevoUsuario = new HashMap<>();
-        nuevoUsuario.put("nombre", "Yaneth Sarmiento");
-        nuevoUsuario.put("correo", "yaneth@concrecol.com");
-        nuevoUsuario.put("tipo", "ADMIN");
+        // ======= CLIENTE =======
+        Cliente cliente = new Cliente(
+                "cliente02",
+                "11323344",
+                "Carlos Cliente",
+                "cliente@obras.com",
+                "CLIENTE",
+                true,
+                "Obras Concretas S.A.S",
+                "Calle 100 #20-30"
+        );
+        DatabaseReference ref = FirebaseInitializer.getDatabase().getReference("usuarios");
+        ref.child(cliente.getId()).setValueAsync(cliente);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        dbRef.push().setValueAsync(nuevoUsuario);
-        System.out.println("Usuario creado.");
 
-        // Leer usuarios
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            public void onDataChange(DataSnapshot snapshot) {
-                System.out.println("=== Usuarios ===");
-                for (DataSnapshot userSnap : snapshot.getChildren()) {
-                    Map<String, Object> user = (Map<String, Object>) userSnap.getValue();
-                    System.out.println(user);
-                }
-            }
+        System.out.println("Cliente subido a Firebase con ID: " + cliente.getId());
+        // ======= CONDUCTOR =======
+        Conductor conductor = new Conductor(
+                "conductor01",
+                "55667788",
+                "Luis Conductor",
+                "luis@mixer.com",
+                "CONDUCTOR",
+                true,
+                "Licencia C2",
+                "Mixer"
+        );
 
-            public void onCancelled(DatabaseError error) {
-                System.out.println("Error al leer: " + error.getMessage());
-            }
-        });
+        // ======= TIPO CONCRETO =======
+        TipoConcreto tipoConcreto = new TipoConcreto(
+                "concreto01",
+                3000,
+                "impermeable, acelerado",
+                "3/4",
+                9.5f,  // asentamiento en pulgadas
+                "Concreto 3000 PSI Rápido"
+        );
+        DatabaseReference ref2 = FirebaseInitializer.getDatabase().getReference("tipos_concreto");
+        ref2.child(tipoConcreto.getId()).setValueAsync(tipoConcreto);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+            // ======= VEHÍCULO =======
+            Vehiculo vehiculo = new Vehiculo(
+                    "vehiculo01",
+                    "XYZ-123",
+                    "Mixer",
+                    "conductor01"
+            );
 
-        Thread.sleep(5000); // para esperar la respuesta
-    }
+            // ======= PEDIDO =======
+            Pedido pedido = new Pedido(
+                    "pedido01",
+                    "cliente01",
+                    "conductor01",
+                    "vehiculo01",
+                    "concreto01",
+                    7.5,
+                    "2025-05-20T08:00:00",
+                    "Obra #1, Avenida Central",
+                    "PENDIENTE",
+                    "Entrega matutina"
+            );
+
+            // ======= Impresión de prueba =======
+            System.out.println("ADMIN: " + admin.getNombre() + " - DNI: " + admin.getDni());
+            System.out.println("CLIENTE: " + cliente.getNombre() + " - DNI: " + cliente.getDni());
+            System.out.println("CONDUCTOR: " + conductor.getNombre() + " - DNI: " + conductor.getDni());
+            System.out.println("TIPO CONCRETO: " + tipoConcreto.getDescripcionComercial() + " (" + tipoConcreto.getAsentamientoInches() + " in)");
+            System.out.println("VEHÍCULO: " + vehiculo.getPlaca() + " - Tipo: " + vehiculo.getTipo());
+            System.out.println("PEDIDO: " + pedido.getId() + " - Estado: " + pedido.getEstado());
+        }
+
 }

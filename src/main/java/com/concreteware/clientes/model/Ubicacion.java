@@ -1,4 +1,4 @@
-package com.concreteware.models;
+package com.concreteware.clientes.model;
 
 public class Ubicacion {
 

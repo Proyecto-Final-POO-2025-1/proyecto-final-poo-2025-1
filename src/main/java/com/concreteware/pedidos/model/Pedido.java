@@ -1,4 +1,6 @@
-package com.concreteware.models;
+package com.concreteware.pedidos.model;
+
+import com.concreteware.pedidos.Producto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

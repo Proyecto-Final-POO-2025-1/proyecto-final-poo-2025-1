@@ -1,4 +1,7 @@
-package com.concreteware.models;
+package com.concreteware.flotas.model;
+
+import com.concreteware.seguridad.model.TipoUsuario;
+import com.concreteware.seguridad.model.Usuario;
 
 public class Conductor extends Usuario {
 

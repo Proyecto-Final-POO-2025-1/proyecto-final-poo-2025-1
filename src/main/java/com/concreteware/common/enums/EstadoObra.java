@@ -1,4 +1,4 @@
-package com.concreteware.models;
+package com.concreteware.common.enums;
 
 public enum EstadoObra {
     ACTIVA,

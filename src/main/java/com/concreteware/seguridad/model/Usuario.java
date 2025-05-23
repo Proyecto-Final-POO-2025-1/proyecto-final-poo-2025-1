@@ -1,4 +1,4 @@
-package com.concreteware.models;
+package com.concreteware.seguridad.model;
 
 import java.io.Serializable;
 

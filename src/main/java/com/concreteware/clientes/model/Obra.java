@@ -1,4 +1,6 @@
-package com.concreteware.models;
+package com.concreteware.clientes.model;
+
+import com.concreteware.common.enums.EstadoObra;
 
 import java.time.LocalDate;
 

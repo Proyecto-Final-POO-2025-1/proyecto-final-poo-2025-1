@@ -1,4 +1,6 @@
-package com.concreteware.models;
+package com.concreteware.seguridad.model;
+
+import com.concreteware.common.enums.NivelAcceso;
 
 public class Administrador extends Usuario {
 

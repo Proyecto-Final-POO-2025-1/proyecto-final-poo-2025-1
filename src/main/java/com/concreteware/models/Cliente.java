@@ -1,32 +1,32 @@
 package com.concreteware.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cliente extends Usuario {
-    private String empresa;
-    private String direccion;
 
-    public Cliente() {
-        super();
+    private List<Obra> obrasAsignadas;
+
+    public Cliente(String id, String dni, String nombre, String telefono, String email,
+                   String username, String password, boolean activo) {
+        super(id, dni, nombre, telefono, email, username, password, TipoUsuario.CLIENTE, activo);
+        this.obrasAsignadas = new ArrayList<>();
     }
 
-    public Cliente(String id, String dni, String nombre, String correo, String tipo, boolean activo, String empresa, String direccion) {
-        super(id, dni, nombre, correo, tipo, activo);
-        this.empresa = empresa;
-        this.direccion = direccion;
+    public List<Obra> getObrasAsignadas() {
+        return obrasAsignadas;
     }
 
-    public String getEmpresa() {
-        return empresa;
+    public void setObrasAsignadas(List<Obra> obrasAsignadas) {
+        this.obrasAsignadas = obrasAsignadas;
     }
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
+    public void agregarObra(Obra obra) {
+        this.obrasAsignadas.add(obra);
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    @Override
+    public String toString() {
+        return super.toString() + ", obrasAsignadas=" + obrasAsignadas.size() + " obras" + '}';
     }
 }

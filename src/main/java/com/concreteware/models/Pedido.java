@@ -1,110 +1,76 @@
 package com.concreteware.models;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Pedido {
-    private String id;
-    private String clienteId;
-    private String conductorId;
-    private String vehiculoId;
-    private String tipoConcretoId;
+
+    private String idPedido; // Clave única del pedido
+    private String dniCliente;
+    private String idObra;
+    private List<Producto> productosSolicitados;
     private double volumenM3;
-    private String fechaEntrega;
-    private String direccionEntrega;
-    private String estado;
-    private String observaciones;
+    private LocalDate fechaEntrega;
+    private String placaVehiculoAsignado;
 
-    public Pedido() {}
-
-    public Pedido(String id, String clienteId, String conductorId, String vehiculoId, String tipoConcretoId,
-                  double volumenM3, String fechaEntrega, String direccionEntrega, String estado, String observaciones) {
-        this.id = id;
-        this.clienteId = clienteId;
-        this.conductorId = conductorId;
-        this.vehiculoId = vehiculoId;
-        this.tipoConcretoId = tipoConcretoId;
+    public Pedido(String idPedido, String dniCliente, String idObra, List<Producto> productosSolicitados,
+                  double volumenM3, LocalDate fechaEntrega, String placaVehiculoAsignado) {
+        this.idPedido = idPedido;
+        this.dniCliente = dniCliente;
+        this.idObra = idObra;
+        this.productosSolicitados = productosSolicitados != null ? productosSolicitados : new ArrayList<>();
         this.volumenM3 = volumenM3;
         this.fechaEntrega = fechaEntrega;
-        this.direccionEntrega = direccionEntrega;
-        this.estado = estado;
-        this.observaciones = observaciones;
+        this.placaVehiculoAsignado = placaVehiculoAsignado;
     }
 
-    public String getId() {
-        return id;
+    public String getIdPedido() {
+        return idPedido;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getDniCliente() {
+        return dniCliente;
     }
 
-    public String getClienteId() {
-        return clienteId;
+    public String getIdObra() {
+        return idObra;
     }
 
-    public void setClienteId(String clienteId) {
-        this.clienteId = clienteId;
+    public List<Producto> getProductosSolicitados() {
+        return productosSolicitados;
     }
 
-    public String getConductorId() {
-        return conductorId;
-    }
-
-    public void setConductorId(String conductorId) {
-        this.conductorId = conductorId;
-    }
-
-    public String getVehiculoId() {
-        return vehiculoId;
-    }
-
-    public void setVehiculoId(String vehiculoId) {
-        this.vehiculoId = vehiculoId;
-    }
-
-    public String getTipoConcretoId() {
-        return tipoConcretoId;
-    }
-
-    public void setTipoConcretoId(String tipoConcretoId) {
-        this.tipoConcretoId = tipoConcretoId;
+    public void setProductosSolicitados(List<Producto> productosSolicitados) {
+        this.productosSolicitados = productosSolicitados;
     }
 
     public double getVolumenM3() {
         return volumenM3;
     }
 
-    public void setVolumenM3(double volumenM3) {
-        this.volumenM3 = volumenM3;
-    }
-
-    public String getFechaEntrega() {
+    public LocalDate getFechaEntrega() {
         return fechaEntrega;
     }
 
-    public void setFechaEntrega(String fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
+    public String getPlacaVehiculoAsignado() {
+        return placaVehiculoAsignado;
     }
 
-    public String getDireccionEntrega() {
-        return direccionEntrega;
+    public void setPlacaVehiculoAsignado(String placaVehiculoAsignado) {
+        this.placaVehiculoAsignado = placaVehiculoAsignado;
     }
 
-    public void setDireccionEntrega(String direccionEntrega) {
-        this.direccionEntrega = direccionEntrega;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "idPedido='" + idPedido + '\'' +
+                ", dniCliente='" + dniCliente + '\'' +
+                ", idObra='" + idObra + '\'' +
+                ", productosSolicitados=" + productosSolicitados.size() +
+                ", volumenM3=" + volumenM3 +
+                ", fechaEntrega=" + fechaEntrega +
+                ", placaVehiculoAsignado='" + placaVehiculoAsignado + '\'' +
+                '}';
     }
 }

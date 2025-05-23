@@ -1,32 +1,26 @@
 package com.concreteware.models;
 
 public class Conductor extends Usuario {
-    private String licencia;
-    private String vehiculoAsignado;
 
-    public Conductor() {
-        super();
+    private String placaVehiculoAsignado;
+
+    public Conductor(String id, String dni, String nombre, String telefono, String email,
+                     String username, String password, boolean activo, String placaVehiculoAsignado) {
+        super(id, dni, nombre, telefono, email, username, password, TipoUsuario.CONDUCTOR, activo);
+        this.placaVehiculoAsignado = placaVehiculoAsignado;
     }
 
-    public Conductor(String id, String dni, String nombre, String correo, String tipo, boolean activo, String licencia, String vehiculoAsignado) {
-        super(id, dni, nombre, correo, tipo, activo);
-        this.licencia = licencia;
-        this.vehiculoAsignado = vehiculoAsignado;
+    public String getPlacaVehiculoAsignado() {
+        return placaVehiculoAsignado;
     }
 
-    public String getLicencia() {
-        return licencia;
+    public void setPlacaVehiculoAsignado(String placaVehiculoAsignado) {
+        this.placaVehiculoAsignado = placaVehiculoAsignado;
     }
 
-    public void setLicencia(String licencia) {
-        this.licencia = licencia;
-    }
-
-    public String getVehiculoAsignado() {
-        return vehiculoAsignado;
-    }
-
-    public void setVehiculoAsignado(String vehiculoAsignado) {
-        this.vehiculoAsignado = vehiculoAsignado;
+    @Override
+    public String toString() {
+        return super.toString() + ", placaVehiculoAsignado='" + placaVehiculoAsignado + "'}";
     }
 }
+

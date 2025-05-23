@@ -1,49 +1,53 @@
 package com.concreteware.models;
 
 public class Vehiculo {
-    private String id;
-    private String placa;
-    private String tipo;
-    private String conductorId;
 
-    public Vehiculo() {}
+    private String placa; // Clave única del vehículo
+    private String marca;
+    private String modelo;
+    private int capacidadCargaM3;
+    private boolean disponible;
 
-    public Vehiculo(String id, String placa, String tipo, String conductorId) {
-        this.id = id;
+    public Vehiculo(String placa, String marca, String modelo, int capacidadCargaM3, boolean disponible) {
         this.placa = placa;
-        this.tipo = tipo;
-        this.conductorId = conductorId;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.capacidadCargaM3 = capacidadCargaM3;
+        this.disponible = disponible;
     }
 
     public String getPlaca() {
         return placa;
     }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
+    public String getMarca() {
+        return marca;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getModelo() {
+        return modelo;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public int getCapacidadCargaM3() {
+        return capacidadCargaM3;
     }
 
-    public String getConductorId() {
-        return conductorId;
+    public boolean isDisponible() {
+        return disponible;
     }
 
-    public void setConductorId(String conductorId) {
-        this.conductorId = conductorId;
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehiculo{" +
+                "placa='" + placa + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", capacidadCargaM3=" + capacidadCargaM3 +
+                ", disponible=" + disponible +
+                '}';
     }
 }

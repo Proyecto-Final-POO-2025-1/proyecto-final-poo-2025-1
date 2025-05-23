@@ -1,21 +1,29 @@
 package com.concreteware.models;
 
-public class Usuario {
-    private String id;
-    private String dni;
+import java.io.Serializable;
+
+public abstract class Usuario implements Serializable {
+
+    private String id; // UUID o generado internamente
+    private String dni; // Documento de identidad
     private String nombre;
-    private String correo;
-    private String tipo; // ADMIN, CLIENTE, CONDUCTOR
+    private String telefono;
+    private String email;
+    private String username;
+    private String password;
+    private TipoUsuario tipoUsuario;
     private boolean activo;
 
-    public Usuario() {}
-
-    public Usuario(String id, String dni,String nombre, String correo, String tipo, boolean activo) {
+    public Usuario(String id, String dni, String nombre, String telefono, String email,
+                   String username, String password, TipoUsuario tipoUsuario, boolean activo) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
-        this.correo = correo;
-        this.tipo = tipo;
+        this.telefono = telefono;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.tipoUsuario = tipoUsuario;
         this.activo = activo;
     }
 
@@ -23,40 +31,32 @@ public class Usuario {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getDni() {
         return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public String getUsername() {
+        return username;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getPassword() {
+        return password;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
     }
 
     public boolean isActivo() {
@@ -65,5 +65,16 @@ public class Usuario {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id='" + id + '\'' +
+                ", dni='" + dni + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", tipoUsuario=" + tipoUsuario +
+                ", activo=" + activo +
+                '}';
     }
 }

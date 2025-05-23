@@ -1,4 +1,4 @@
-package com.concreteware.seguridad.model;
+package com.concreteware.seguridad.usuario;
 
 import java.io.Serializable;
 

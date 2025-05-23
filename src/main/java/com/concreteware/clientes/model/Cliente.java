@@ -1,7 +1,7 @@
 package com.concreteware.clientes.model;
 
-import com.concreteware.seguridad.model.TipoUsuario;
-import com.concreteware.seguridad.model.Usuario;
+import com.concreteware.seguridad.usuario.TipoUsuario;
+import com.concreteware.seguridad.usuario.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;

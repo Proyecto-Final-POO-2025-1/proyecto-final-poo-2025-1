@@ -1,4 +1,4 @@
-package com.concreteware.pedidos;
+package com.concreteware.pedidos.model;
 
 public class Producto {
 

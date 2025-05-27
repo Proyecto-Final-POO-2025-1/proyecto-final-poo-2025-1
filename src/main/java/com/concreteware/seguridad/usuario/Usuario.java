@@ -67,6 +67,14 @@ public abstract class Usuario implements Serializable {
         this.activo = activo;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +

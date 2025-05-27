@@ -12,8 +12,8 @@ public class Obra {
     private String municipio;
     private Ubicacion ubicacion;
     private EstadoObra estado;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFin;
+    private String fechaInicio;
+    private String fechaFin;
 
     public Obra(String idObra, String nombreObra, String direccion, String municipio,
                 Ubicacion ubicacion, EstadoObra estado, LocalDate fechaInicio, LocalDate fechaFin) {
@@ -23,8 +23,8 @@ public class Obra {
         this.municipio = municipio;
         this.ubicacion = ubicacion;
         this.estado = estado;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
+        this.fechaInicio = fechaInicio.toString() + "T00:00:00";
+        this.fechaFin = fechaFin.toString() + "T00:00:00";
     }
 
     public String getIdObra() {
@@ -51,11 +51,11 @@ public class Obra {
         return estado;
     }
 
-    public LocalDate getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public LocalDate getFechaFin() {
+    public String getFechaFin() {
         return fechaFin;
     }
 

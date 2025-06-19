@@ -4,7 +4,7 @@ public class Conductor extends Usuario {
     private String licencia;
     private String vehiculoAsignado;
 
-    public Conductor() {
+    public Conductor(int id, String nombre) {
         super();
     }
 

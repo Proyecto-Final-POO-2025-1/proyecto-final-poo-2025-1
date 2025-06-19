@@ -37,4 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-ServiceAccountKey.json
+src/main/resources/ServiceAccountKey.json

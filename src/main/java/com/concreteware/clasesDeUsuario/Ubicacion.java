@@ -1,4 +1,4 @@
-package com.concreteware.clientes.model;
+package com.concreteware.clasesDeUsuario;
 
 public class Ubicacion {
 

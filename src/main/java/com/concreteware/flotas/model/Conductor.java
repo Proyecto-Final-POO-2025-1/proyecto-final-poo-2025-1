@@ -5,25 +5,25 @@ import com.concreteware.seguridad.usuario.Usuario;
 
 public class Conductor extends Usuario {
 
-    private String placaVehiculoAsignado;
+    private Vehiculo vehiculo;
 
     public Conductor(String id, String dni, String nombre, String telefono, String email,
-                     String username, String password, boolean activo, String placaVehiculoAsignado) {
+                     String username, String password, boolean activo) {
         super(id, dni, nombre, telefono, email, username, password, TipoUsuario.CONDUCTOR, activo);
-        this.placaVehiculoAsignado = placaVehiculoAsignado;
+        this.vehiculo = null;
     }
 
-    public String getPlacaVehiculoAsignado() {
-        return placaVehiculoAsignado;
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
     }
 
-    public void setPlacaVehiculoAsignado(String placaVehiculoAsignado) {
-        this.placaVehiculoAsignado = placaVehiculoAsignado;
+    public Vehiculo getVehiculo() {
+        return vehiculo;
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", placaVehiculoAsignado='" + placaVehiculoAsignado + "'}";
+        return super.toString() + ", placaVehiculoAsignado='" + vehiculo.getPlaca() + "'}";
     }
 }
 

@@ -1,5 +1,6 @@
-package com.concreteware.clientes.model;
+package com.concreteware.clasesDeUsuario;
 
+import com.concreteware.common.enums.NivelAcceso;
 import com.concreteware.seguridad.usuario.TipoUsuario;
 import com.concreteware.seguridad.usuario.Usuario;
 
@@ -26,6 +27,10 @@ public class Cliente extends Usuario {
 
     public void agregarObra(Obra obra) {
         this.obrasAsignadas.add(obra);
+    }
+
+    public void eliminarObra(Obra obra) {
+        this.obrasAsignadas.remove(obra);
     }
 
     @Override

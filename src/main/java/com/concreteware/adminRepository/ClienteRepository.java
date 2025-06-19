@@ -1,7 +1,7 @@
-package com.concreteware.clientes.repository;
+package com.concreteware.adminRepository;
 
-import com.concreteware.clientes.model.Cliente;
-import com.concreteware.clientes.model.Obra;
+import com.concreteware.clasesDeUsuario.Cliente;
+import com.concreteware.clasesDeUsuario.Obra;
 
 import java.util.List;
 

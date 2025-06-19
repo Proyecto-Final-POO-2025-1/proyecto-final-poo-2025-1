@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bb07d554-a6fa-4a89-a9b9-39025620e01d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/clientes/model/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/clasesDeUsuario/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/clientes/model/Obra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/clasesDeUsuario/Obra.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/clientes/model/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/clasesDeUsuario/Ubicacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/clientes/repository/ClienteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/adminRepository/ClienteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/clientes/repository/impl/ClienteRepositoryFirebase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/adminRepository/impl/ClienteRepositoryFirebase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/config/FirebaseInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/config/FirebaseInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/flotas/model/Conductor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/flotas/model/Conductor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/pedidos/model/Pedido.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/pedidos/model/Pedido.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/pedidos/model/Producto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/pedidos/model/Producto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/pruebas/ClienteRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/concreteware/seguridad/usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/concreteware/seguridad/usuario/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../TestRecycle/TestRecycle.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../TestRecycle/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../TestRecycle/src/testrecycle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../tarea_conversion" beforeDir="false" afterPath="$PROJECT_DIR$/../../../tarea_conversion" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../untitled/untitled.iml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;carlosrueda13&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/carlosrueda13/chat.git&quot;,
+    &quot;accountId&quot;: &quot;96940e15-f295-49c8-9487-ace42b2f8bc0&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2xKCggvmEg6bpRQdERrvaaZFEKL" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Application.ClienteRepositoryTest.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.Prueba.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.ConcretewareApplication.executor": "Run",
+    "git-widget-placeholder": "feature/data-structure-concreteware",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/Users/carlosruedasarmiento/Library/CloudStorage/OneDrive-UniversidadNacionaldeColombia/NOVENO SEMESTRE/POO/Proyecto final/Codigo/proyecto_final/src/main/java/com/concreteware/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "configurable.group.build",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.concreteware.pedidos.model" />
+      <recent name="com.concreteware.common.enums" />
+      <recent name="com.concreteware.seguridad.model" />
+      <recent name="com.concreteware.pedidos" />
+      <recent name="com.concreteware.clientes.model" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="proyecto_final" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="proyecto_final" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bb07d554-a6fa-4a89-a9b9-39025620e01d" name="Changes" comment="" />
+      <created>1747677491628</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747677491628</updated>
+      <workItem from="1747677493959" duration="5989000" />
+      <workItem from="1747707910697" duration="170000" />
+      <workItem from="1747777263683" duration="7145000" />
+      <workItem from="1747942422411" duration="10000" />
+      <workItem from="1747942533789" duration="553000" />
+      <workItem from="1747948793863" duration="2242000" />
+      <workItem from="1748016384514" duration="3220000" />
+      <workItem from="1748036453249" duration="4224000" />
+      <workItem from="1748383413163" duration="889000" />
+      <workItem from="1748554699267" duration="1330000" />
+      <workItem from="1749158131374" duration="130000" />
+      <workItem from="1749158278186" duration="136000" />
+      <workItem from="1749158774647" duration="1793000" />
+      <workItem from="1749490556921" duration="9000" />
+      <workItem from="1749916665196" duration="2941000" />
+      <workItem from="1750179504695" duration="10018000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

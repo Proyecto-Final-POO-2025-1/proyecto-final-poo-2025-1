@@ -4,10 +4,10 @@ import java.util.List;
 import com.concreteware.core.model.Obra;
 
 public interface ObraAdminService {
-        String crearObra(Obra obra);
-        void eliminarObra(String idObra);
-        Obra obtenerObraPorId(String idObra);
-        List<Obra> listarObras(String idCliente);
-        Obra actualizarObra(Obra obra);
+        String crearObra(Obra obra, String idPlanta);
+        void eliminarObra(String idObra, String idPlanta);
+        Obra obtenerObraPorId(String idObra, String idPlanta);
+        List<Obra> listarObras(String idCliente, String idPlanta);
+        Obra actualizarObra(Obra obra, String idPlanta);
 }
 

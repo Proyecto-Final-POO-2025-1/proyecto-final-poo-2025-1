@@ -17,9 +17,9 @@ public class ClienteAdminServiceImpl implements ClienteAdminService {
     private static final String COLLECTION_NAME = "clientes";
 
     @Override
-    public Cliente crearCliente(Cliente cliente) {
+    public Cliente crearCliente(Cliente cliente, String idPlanta) {
         Firestore db = FirebaseInitializer.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document();
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document();
         cliente.setId(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(cliente);
         try {
@@ -31,15 +31,15 @@ public class ClienteAdminServiceImpl implements ClienteAdminService {
     }
 
     @Override
-    public void eliminarCliente(String idCliente) {
+    public void eliminarCliente(String idCliente, String idPlanta) {
         Firestore db = FirebaseInitializer.getFirestore();
-        db.collection(COLLECTION_NAME).document(idCliente).delete();
+        db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idCliente).delete();
     }
 
     @Override
-    public Cliente obtenerClientePorId(String idCliente) {
+    public Cliente obtenerClientePorId(String idCliente, String idPlanta) {
         Firestore db = FirebaseInitializer.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document(idCliente);
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idCliente);
         try {
             DocumentSnapshot snapshot = docRef.get().get();
             return snapshot.exists() ? snapshot.toObject(Cliente.class) : null;
@@ -49,11 +49,11 @@ public class ClienteAdminServiceImpl implements ClienteAdminService {
     }
 
     @Override
-    public List<Cliente> listarClientes() {
+    public List<Cliente> listarClientes(String idPlanta) {
         Firestore db = FirebaseInitializer.getFirestore();
         List<Cliente> clientes = new ArrayList<>();
         try {
-            ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME).get();
+            ApiFuture<QuerySnapshot> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).get();
             for (DocumentSnapshot doc : future.get().getDocuments()) {
                 clientes.add(doc.toObject(Cliente.class));
             }
@@ -64,9 +64,9 @@ public class ClienteAdminServiceImpl implements ClienteAdminService {
     }
 
     @Override
-    public Cliente actualizarCliente(Cliente cliente) {
+    public Cliente actualizarCliente(Cliente cliente, String idPlanta) {
         Firestore db = FirebaseInitializer.getFirestore();
-        db.collection(COLLECTION_NAME).document(cliente.getId()).set(cliente);
+        db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(cliente.getId()).set(cliente);
         return cliente;
     }
 }

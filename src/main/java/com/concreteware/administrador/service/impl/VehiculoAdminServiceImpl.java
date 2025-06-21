@@ -17,9 +17,9 @@ public class VehiculoAdminServiceImpl implements VehiculoAdminService {
     private static final String COLLECTION_NAME = "vehiculos";
 
     @Override
-    public String crearVehiculo(Vehiculo vehiculo) {
+    public String crearVehiculo(Vehiculo vehiculo, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document();
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document();
         vehiculo.setIdVehiculo(docRef.getId());
         ApiFuture<WriteResult> future = docRef.set(vehiculo);
         try {
@@ -31,9 +31,9 @@ public class VehiculoAdminServiceImpl implements VehiculoAdminService {
     }
 
     @Override
-    public Vehiculo obtenerVehiculoPorId(String idVehiculo) {
+    public Vehiculo obtenerVehiculoPorId(String idVehiculo, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document(idVehiculo);
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idVehiculo);
         try {
             DocumentSnapshot doc = docRef.get().get();
             return doc.exists() ? doc.toObject(Vehiculo.class) : null;
@@ -43,9 +43,9 @@ public class VehiculoAdminServiceImpl implements VehiculoAdminService {
     }
 
     @Override
-    public List<Vehiculo> listarVehiculos() {
+    public List<Vehiculo> listarVehiculos(String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME).get();
+        ApiFuture<QuerySnapshot> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).get();
         List<Vehiculo> vehiculos = new ArrayList<>();
         try {
             for (DocumentSnapshot doc : future.get().getDocuments()) {
@@ -58,9 +58,9 @@ public class VehiculoAdminServiceImpl implements VehiculoAdminService {
     }
 
     @Override
-    public Vehiculo actualizarVehiculo(Vehiculo vehiculo) {
+    public Vehiculo actualizarVehiculo(Vehiculo vehiculo, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> future = db.collection(COLLECTION_NAME).document(vehiculo.getIdVehiculo()).set(vehiculo);
+        ApiFuture<WriteResult> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(vehiculo.getIdVehiculo()).set(vehiculo);
         try {
             future.get();
             return vehiculo;
@@ -70,8 +70,8 @@ public class VehiculoAdminServiceImpl implements VehiculoAdminService {
     }
 
     @Override
-    public void eliminarVehiculo(String idVehiculo) {
+    public void eliminarVehiculo(String idVehiculo, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection(COLLECTION_NAME).document(idVehiculo).delete();
+        db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idVehiculo).delete();
     }
 }

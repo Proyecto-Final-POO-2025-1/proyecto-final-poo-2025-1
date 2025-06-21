@@ -5,9 +5,9 @@ import com.concreteware.core.model.Pedido;
 import com.concreteware.common.enums.EstadoPedido;
 
 public interface PedidoAdminService {
-    String crearPedido(Pedido pedido);
-    Pedido obtenerPedidoPorId(String idPedido);
-    List<Pedido> listarPedidos();
-    void actualizarEstadoPedido(String idPedido, EstadoPedido nuevoEstado);
-    void asignarConductorYPedido(String idPedido, String idConductor);
+    String crearPedido(Pedido pedido, String idPlanta);
+    Pedido obtenerPedidoPorId(String idPedido, String idPlanta);
+    List<Pedido> listarPedidos(String idPlanta);
+    void actualizarEstadoPedido(String idPedido, EstadoPedido nuevoEstado, String idPlanta);
+    void asignarConductorYPedido(String idPedido, String idConductor, String idPlanta);
 }

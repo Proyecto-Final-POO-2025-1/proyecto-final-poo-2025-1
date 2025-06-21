@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/administrador/clientes")
+@RequestMapping("/{idPlanta}/administrador/clientes")
 public class ClienteAdminController {
 
     private final ClienteAdminService clienteService;
@@ -19,28 +19,28 @@ public class ClienteAdminController {
     }
 
     @PostMapping
-    public Cliente crearCliente(@RequestBody Cliente cliente) {
-        return clienteService.crearCliente(cliente);
+    public Cliente crearCliente(@RequestBody Cliente cliente, @PathVariable String idPlanta) {
+        return clienteService.crearCliente(cliente, idPlanta);
     }
 
     @GetMapping
-    public List<Cliente> obtenerTodos() {
-        return clienteService.listarClientes();
+    public List<Cliente> obtenerTodos(@PathVariable String idPlanta) {
+        return clienteService.listarClientes(idPlanta);
     }
 
     @GetMapping("/{id}")
-    public Cliente obtenerPorId(@PathVariable String id) {
-        return clienteService.obtenerClientePorId(id);
+    public Cliente obtenerPorId(@PathVariable String id, @PathVariable String idPlanta) {
+        return clienteService.obtenerClientePorId(id, idPlanta);
     }
 
     @PutMapping("/{id}")
-    public Cliente actualizar(@RequestBody Cliente clienteActualizado) {
-        return clienteService.actualizarCliente(clienteActualizado);
+    public Cliente actualizar(@RequestBody Cliente clienteActualizado, @PathVariable String idPlanta) {
+        return clienteService.actualizarCliente(clienteActualizado, idPlanta);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable String id) {
-        clienteService.eliminarCliente(id);
+    public void eliminar(@PathVariable String id, @PathVariable String idPlanta) {
+        clienteService.eliminarCliente(id, idPlanta);
     }
 }
 

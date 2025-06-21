@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/administrador/conductores")
+@RequestMapping("/{idPlanta}/administrador/conductores")
 public class ConductorAdminController {
 
     private final ConductorAdminService conductorService;
@@ -19,28 +19,28 @@ public class ConductorAdminController {
     }
 
     @PostMapping
-    public String crearConductor(@RequestBody Conductor conductor) {
-        return conductorService.crearConductor(conductor);
+    public String crearConductor(@RequestBody Conductor conductor, @PathVariable String idPlanta) {
+        return conductorService.crearConductor(conductor, idPlanta);
     }
 
     @GetMapping("/{id}")
-    public Conductor obtenerConductorPorId(@PathVariable String id) {
-        return conductorService.obtenerConductorPorId(id);
+    public Conductor obtenerConductorPorId(@PathVariable String id, @PathVariable String idPlanta) {
+        return conductorService.obtenerConductorPorId(id, idPlanta);
     }
 
     @GetMapping
-    public List<Conductor> listarConductores() {
-        return conductorService.listarConductores();
+    public List<Conductor> listarConductores(@PathVariable String idPlanta) {
+        return conductorService.listarConductores(idPlanta);
     }
 
     @PutMapping("/{id}")
-    public Conductor actualizarConductor(@PathVariable String id, @RequestBody Conductor conductor) {
+    public Conductor actualizarConductor(@PathVariable String id, @RequestBody Conductor conductor, @PathVariable String idPlanta) {
         conductor.setId(id);
-        return conductorService.actualizarConductor(conductor);
+        return conductorService.actualizarConductor(conductor, idPlanta);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarConductor(@PathVariable String id) {
-        conductorService.eliminarConductor(id);
+    public void eliminarConductor(@PathVariable String id, @PathVariable String idPlanta) {
+        conductorService.eliminarConductor(id, idPlanta);
     }
 }

@@ -18,9 +18,9 @@ public class PedidoAdminServiceImpl implements PedidoAdminService {
     private static final String COLLECTION_NAME = "pedidos";
 
     @Override
-    public String crearPedido(Pedido pedido) {
+    public String crearPedido(Pedido pedido, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document();
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document();
         pedido.setIdPedido(docRef.getId());
         ApiFuture<WriteResult> future = docRef.set(pedido);
         try {
@@ -32,10 +32,10 @@ public class PedidoAdminServiceImpl implements PedidoAdminService {
     }
 
     @Override
-    public Pedido obtenerPedidoPorId(String idPedido) {
+    public Pedido obtenerPedidoPorId(String idPedido, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
         try {
-            DocumentSnapshot doc = db.collection(COLLECTION_NAME).document(idPedido).get().get();
+            DocumentSnapshot doc = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idPedido).get().get();
             return doc.exists() ? doc.toObject(Pedido.class) : null;
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException("Error al obtener el pedido", e);
@@ -43,11 +43,11 @@ public class PedidoAdminServiceImpl implements PedidoAdminService {
     }
 
     @Override
-    public List<Pedido> listarPedidos() {
+    public List<Pedido> listarPedidos(String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
         List<Pedido> pedidos = new ArrayList<>();
         try {
-            ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME).get();
+            ApiFuture<QuerySnapshot> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).get();
             for (DocumentSnapshot doc : future.get().getDocuments()) {
                 pedidos.add(doc.toObject(Pedido.class));
             }
@@ -58,9 +58,9 @@ public class PedidoAdminServiceImpl implements PedidoAdminService {
     }
 
     @Override
-    public void actualizarEstadoPedido(String idPedido, EstadoPedido nuevoEstado) {
+    public void actualizarEstadoPedido(String idPedido, EstadoPedido nuevoEstado, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> future = db.collection(COLLECTION_NAME)
+        ApiFuture<WriteResult> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME)
                 .document(idPedido)
                 .update("estado", nuevoEstado.name());
         try {
@@ -71,9 +71,9 @@ public class PedidoAdminServiceImpl implements PedidoAdminService {
     }
 
     @Override
-    public void asignarConductorYPedido(String idPedido, String idConductor) {
+    public void asignarConductorYPedido(String idPedido, String idConductor, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> future = db.collection(COLLECTION_NAME)
+        ApiFuture<WriteResult> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME)
                 .document(idPedido)
                 .update("idConductor", idConductor);
         try {

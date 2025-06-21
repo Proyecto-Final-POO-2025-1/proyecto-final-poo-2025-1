@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/administrador/pedidos")
+@RequestMapping("/{idPlanta}/administrador/pedidos")
 public class PedidoAdminController {
 
     private final PedidoAdminService pedidoService;
@@ -20,27 +20,27 @@ public class PedidoAdminController {
     }
 
     @PostMapping
-    public String crearPedido(@RequestBody Pedido pedido) {
-        return pedidoService.crearPedido(pedido);
+    public String crearPedido(@RequestBody Pedido pedido, @PathVariable String idPlanta) {
+        return pedidoService.crearPedido(pedido, idPlanta);
     }
 
     @GetMapping("/{id}")
-    public Pedido obtenerPedidoPorId(@PathVariable String id) {
-        return pedidoService.obtenerPedidoPorId(id);
+    public Pedido obtenerPedidoPorId(@PathVariable String id, @PathVariable String idPlanta) {
+        return pedidoService.obtenerPedidoPorId(id, idPlanta);
     }
 
     @GetMapping
-    public List<Pedido> listarPedidos() {
-        return pedidoService.listarPedidos();
+    public List<Pedido> listarPedidos(@PathVariable String idPlanta) {
+        return pedidoService.listarPedidos(idPlanta);
     }
 
     @PatchMapping("/{id}/estado")
-    public void actualizarEstado(@PathVariable String id, @RequestParam EstadoPedido nuevoEstado) {
-        pedidoService.actualizarEstadoPedido(id, nuevoEstado);
+    public void actualizarEstado(@PathVariable String id, @RequestParam EstadoPedido nuevoEstado, @PathVariable String idPlanta) {
+        pedidoService.actualizarEstadoPedido(id, nuevoEstado, idPlanta);
     }
 
     @PatchMapping("/{id}/conductor")
-    public void asignarConductor(@PathVariable String id, @RequestParam String idConductor) {
-        pedidoService.asignarConductorYPedido(id, idConductor);
+    public void asignarConductor(@PathVariable String id, @RequestParam String idConductor, @PathVariable String idPlanta) {
+        pedidoService.asignarConductorYPedido(id, idConductor, idPlanta);
     }
 }

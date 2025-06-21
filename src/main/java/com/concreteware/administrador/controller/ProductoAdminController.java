@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/administrador/productos")
+@RequestMapping("/{idPlanta}/administrador/productos")
 public class ProductoAdminController {
 
     private final ProductoAdminService productoService;
@@ -19,29 +19,29 @@ public class ProductoAdminController {
     }
 
     @PostMapping
-    public String crearProducto(@RequestBody Producto producto) {
-        return productoService.crearProducto(producto);
+    public String crearProducto(@RequestBody Producto producto, @PathVariable String idPlanta) {
+        return productoService.crearProducto(producto, idPlanta);
     }
 
     @GetMapping("/{id}")
-    public Producto obtenerProductoPorId(@PathVariable String id) {
-        return productoService.obtenerProductoPorId(id);
+    public Producto obtenerProductoPorId(@PathVariable String id, @PathVariable String idPlanta) {
+        return productoService.obtenerProductoPorId(id, idPlanta);
     }
 
     @GetMapping
-    public List<Producto> listarProductos() {
-        return productoService.listarProductos();
+    public List<Producto> listarProductos(@PathVariable String idPlanta) {
+        return productoService.listarProductos(idPlanta);
     }
 
     @PutMapping("/{id}")
-    public Producto actualizarProducto(@PathVariable String id, @RequestBody Producto producto) {
+    public Producto actualizarProducto(@PathVariable String id, @RequestBody Producto producto, @PathVariable String idPlanta) {
         producto.setIdProducto(id);
-        return productoService.actualizarProducto(producto);
+        return productoService.actualizarProducto(producto, idPlanta);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarProducto(@PathVariable String id) {
-        productoService.eliminarProducto(id);
+    public void eliminarProducto(@PathVariable String id, @PathVariable String idPlanta) {
+        productoService.eliminarProducto(id, idPlanta);
     }
 }
 

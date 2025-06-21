@@ -4,9 +4,9 @@ import java.util.List;
 import com.concreteware.core.model.Producto;
 
 public interface ProductoAdminService {
-    String crearProducto(Producto producto);
-    void eliminarProducto(String idProducto);
-    Producto obtenerProductoPorId(String idProducto);
-    List<Producto> listarProductos();
-    Producto actualizarProducto(Producto producto);
+    String crearProducto(Producto producto, String idPlanta);
+    void eliminarProducto(String idProducto, String idPlanta);
+    Producto obtenerProductoPorId(String idProducto, String idPlanta);
+    List<Producto> listarProductos(String idPlanta);
+    Producto actualizarProducto(Producto producto, String idPlanta);
 }

@@ -17,9 +17,9 @@ public class ObraAdminServiceImpl implements ObraAdminService {
     private static final String COLLECTION_NAME = "obras";
 
     @Override
-    public String crearObra(Obra obra) {
+    public String crearObra(Obra obra, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document();
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document();
         obra.setIdObra(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(obra);
         try {
@@ -31,9 +31,9 @@ public class ObraAdminServiceImpl implements ObraAdminService {
     }
 
     @Override
-    public Obra obtenerObraPorId(String idObra) {
+    public Obra obtenerObraPorId(String idObra, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document(idObra);
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idObra);
         try {
             DocumentSnapshot doc = docRef.get().get();
             return doc.exists() ? doc.toObject(Obra.class) : null;
@@ -43,9 +43,9 @@ public class ObraAdminServiceImpl implements ObraAdminService {
     }
 
     @Override
-    public List<Obra> listarObras(String idCliente) {
+    public List<Obra> listarObras(String idCliente, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        CollectionReference obrasRef = db.collection(COLLECTION_NAME);
+        CollectionReference obrasRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME);
 
         ApiFuture<QuerySnapshot> future = obrasRef.whereEqualTo("idCliente", idCliente).get();
 
@@ -61,9 +61,9 @@ public class ObraAdminServiceImpl implements ObraAdminService {
     }
 
     @Override
-    public Obra actualizarObra(Obra obra) {
+    public Obra actualizarObra(Obra obra, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> future = db.collection(COLLECTION_NAME).document(obra.getIdObra()).set(obra);
+        ApiFuture<WriteResult> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(obra.getIdObra()).set(obra);
         try {
             future.get();
             return obra;
@@ -73,8 +73,8 @@ public class ObraAdminServiceImpl implements ObraAdminService {
     }
 
     @Override
-    public void eliminarObra(String idObra) {
+    public void eliminarObra(String idObra, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection(COLLECTION_NAME).document(idObra).delete();
+        db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idObra).delete();
     }
 }

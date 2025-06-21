@@ -17,9 +17,9 @@ public class ProductoAdminServiceImpl implements ProductoAdminService {
     private static final String COLLECTION_NAME = "productos";
 
     @Override
-    public String crearProducto(Producto producto) {
+    public String crearProducto(Producto producto, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document();
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document();
         producto.setIdProducto(docRef.getId());
         ApiFuture<WriteResult> future = docRef.set(producto);
         try {
@@ -31,10 +31,10 @@ public class ProductoAdminServiceImpl implements ProductoAdminService {
     }
 
     @Override
-    public Producto obtenerProductoPorId(String id) {
+    public Producto obtenerProductoPorId(String id, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
         try {
-            DocumentSnapshot doc = db.collection(COLLECTION_NAME).document(id).get().get();
+            DocumentSnapshot doc = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(id).get().get();
             return doc.exists() ? doc.toObject(Producto.class) : null;
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException("Error al obtener producto", e);
@@ -42,11 +42,11 @@ public class ProductoAdminServiceImpl implements ProductoAdminService {
     }
 
     @Override
-    public List<Producto> listarProductos() {
+    public List<Producto> listarProductos(String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
         List<Producto> productos = new ArrayList<>();
         try {
-            ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME).get();
+            ApiFuture<QuerySnapshot> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).get();
             for (DocumentSnapshot doc : future.get().getDocuments()) {
                 productos.add(doc.toObject(Producto.class));
             }
@@ -57,9 +57,9 @@ public class ProductoAdminServiceImpl implements ProductoAdminService {
     }
 
     @Override
-    public Producto actualizarProducto(Producto producto) {
+    public Producto actualizarProducto(Producto producto, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> future = db.collection(COLLECTION_NAME)
+        ApiFuture<WriteResult> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME)
                 .document(producto.getIdProducto()).set(producto);
         try {
             future.get();
@@ -70,8 +70,8 @@ public class ProductoAdminServiceImpl implements ProductoAdminService {
     }
 
     @Override
-    public void eliminarProducto(String id) {
+    public void eliminarProducto(String id, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection(COLLECTION_NAME).document(id).delete();
+        db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(id).delete();
     }
 }

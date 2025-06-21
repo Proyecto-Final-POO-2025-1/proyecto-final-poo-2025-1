@@ -17,9 +17,9 @@ public class ConductorAdminServiceImpl implements ConductorAdminService {
     private static final String COLLECTION_NAME = "conductores";
 
     @Override
-    public String crearConductor(Conductor conductor) {
+    public String crearConductor(Conductor conductor, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document();
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document();
         conductor.setId(docRef.getId());
         ApiFuture<WriteResult> result = docRef.set(conductor);
         try {
@@ -31,9 +31,9 @@ public class ConductorAdminServiceImpl implements ConductorAdminService {
     }
 
     @Override
-    public Conductor obtenerConductorPorId(String idConductor) {
+    public Conductor obtenerConductorPorId(String idConductor, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection(COLLECTION_NAME).document(idConductor);
+        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idConductor);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         try {
             DocumentSnapshot doc = future.get();
@@ -48,9 +48,9 @@ public class ConductorAdminServiceImpl implements ConductorAdminService {
     }
 
     @Override
-    public List<Conductor> listarConductores() {
+    public List<Conductor> listarConductores(String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME).get();
+        ApiFuture<QuerySnapshot> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).get();
         List<Conductor> conductores = new ArrayList<>();
         try {
             for (DocumentSnapshot doc : future.get().getDocuments()) {
@@ -64,9 +64,9 @@ public class ConductorAdminServiceImpl implements ConductorAdminService {
     }
 
     @Override
-    public Conductor actualizarConductor(Conductor conductor) {
+    public Conductor actualizarConductor(Conductor conductor, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> future = db.collection(COLLECTION_NAME).document(conductor.getId()).set(conductor);
+        ApiFuture<WriteResult> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(conductor.getId()).set(conductor);
         try {
             future.get();
             return conductor;
@@ -76,9 +76,9 @@ public class ConductorAdminServiceImpl implements ConductorAdminService {
     }
 
     @Override
-    public void eliminarConductor(String idConductor) {
+    public void eliminarConductor(String idConductor, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> future = db.collection(COLLECTION_NAME).document(idConductor).delete();
+        ApiFuture<WriteResult> future = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idConductor).delete();
         try {
             future.get();
         } catch (InterruptedException | ExecutionException e) {

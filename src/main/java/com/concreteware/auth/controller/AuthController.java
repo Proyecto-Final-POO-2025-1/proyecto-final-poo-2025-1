@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/{idPlanta}/auth")
 public class AuthController {
 
-    @PostMapping("/verify-token")
+    @PostMapping("/login")
     public ResponseEntity<?> verificarToken(@RequestBody TokenRequest request, @PathVariable String idPlanta) {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(request.getIdToken());

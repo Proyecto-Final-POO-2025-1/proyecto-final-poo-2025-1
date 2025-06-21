@@ -16,4 +16,5 @@ public class Vehiculo {
     private double capacidadM3;        // Capacidad del tanque en m³
     private boolean activo;            // Para deshabilitar vehículos sin borrarlos
     private Ubicacion ubicacionActual; // Actualizada por el conductor en tiempo real
+    private String idConductor;       // ID del conductor asignado (referencia a Conductor.id)
 }

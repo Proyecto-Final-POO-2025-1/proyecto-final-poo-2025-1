@@ -1,6 +1,6 @@
 package com.concreteware.core.model;
 
-import com.concreteware.core.enums.EstadoPedido;
+import com.concreteware.common.enums.EstadoPedido;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +23,5 @@ public class Pedido {
     private String fechaEntrega; // formato YYYY-MM-DD
     private String horaEntrega;  // formato HH:mm
     private EstadoPedido estado;
-
     private Ubicacion ubicacionActual;
 }

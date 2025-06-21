@@ -1,5 +1,4 @@
-package com.concreteware.clientes.model;
-
+package com.concreteware.core.model;
 import com.concreteware.core.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;

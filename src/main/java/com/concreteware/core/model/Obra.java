@@ -1,6 +1,6 @@
 package com.concreteware.core.model;
 
-import com.concreteware.core.enums.EstadoObra;
+import com.concreteware.common.enums.EstadoObra;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

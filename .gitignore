@@ -37,4 +37,8 @@ build/
 ### Mac OS ###
 .DS_Store
 
+### Windows ###
+Thumbs.db
+
+src/main/resources/ServiceAccountKey.json
 

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Real Login</title>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Configuración real de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkhNt7OGINJdEeEHU5iNEPbdWbxbul_IU",
+            authDomain: "concreteware.firebaseapp.com",
+            databaseURL: "https://concreteware-default-rtdb.firebaseio.com",
+            projectId: "concreteware",
+            storageBucket: "concreteware.firebasestorage.app",
+            messagingSenderId: "968538787293",
+            appId: "1:968538787293:web:afe035a4726c410e2efa34",
+            measurementId: "G-F00R0SQ8Y5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.testRealLogin = async () => {
+            try {
+                console.log('🔐 Iniciando login real con Firebase...');
+                
+                // Login con Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, 'juan@ejemplo.com', 'secreto123');
+                console.log('✅ Firebase Auth exitoso');
+                console.log('👤 UID:', userCredential.user.uid);
+                
+                // Obtener token
+                const idToken = await userCredential.user.getIdToken();
+                console.log('🎫 Token obtenido (primeros 50 chars):', idToken.substring(0, 50) + '...');
+                
+                // Probar endpoint del backend
+                console.log('🌐 Probando endpoint del backend...');
+                const url = 'http://localhost:8080/UMu5w9GVctvC4diaewkJ/auth/login';
+                console.log('📡 URL:', url);
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idToken })
+                });
+                
+                console.log('📊 Response status:', response.status);
+                console.log('📊 Response headers:', Object.fromEntries(response.headers.entries()));
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Backend response:', data);
+                    document.getElementById('result').innerHTML = '<p style="color: green;">✅ Login exitoso!</p><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                } else {
+                    const errorText = await response.text();
+                    console.error('❌ Backend error:', response.status, errorText);
+                    document.getElementById('result').innerHTML = `<p style="color: red;">❌ Error ${response.status}: ${errorText}</p>`;
+                }
+                
+            } catch (error) {
+                console.error('❌ Error:', error);
+                document.getElementById('result').innerHTML = `<p style="color: red;">❌ Error: ${error.message}</p>`;
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Test Real Login</h1>
+    <p>Esta página usa la configuración real de Firebase para probar el login.</p>
+    
+    <button onclick="testRealLogin()" style="padding: 10px 20px; font-size: 16px;">
+        🔍 Probar Login Real
+    </button>
+    
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 10px; border: 1px solid #ccc;"></div>
+    
+    <div style="margin-top: 20px;">
+        <h3>Instrucciones:</h3>
+        <ol>
+            <li>Abre las herramientas de desarrollador (F12)</li>
+            <li>Ve a la pestaña Console</li>
+            <li>Haz clic en "Probar Login Real"</li>
+            <li>Revisa los logs en la consola</li>
+        </ol>
+    </div>
+</body>
+</html>

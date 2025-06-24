@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../services/api';
-import { Pedido, Cliente, Conductor, Producto, EstadoPedido } from '../types';
+import { Pedido, Cliente, Conductor, Producto, EstadoPedido, Obra } from '../types';
 import { Plus, Edit, Search, X, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -11,6 +11,7 @@ const Pedidos: React.FC = () => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [conductores, setConductores] = useState<Conductor[]>([]);
   const [productos, setProductos] = useState<Producto[]>([]);
+  const [obras, setObras] = useState<Obra[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -20,7 +21,7 @@ const Pedidos: React.FC = () => {
     idCliente: '',
     idObra: '',
     fechaEntrega: '',
-    productos: [{ idProducto: '', cantidad: 1, precioUnitario: 0 }],
+    productos: [{ idProducto: '', cantidadM3: 1, precioUnitario: 0, observaciones: '' }],
   });
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const Pedidos: React.FC = () => {
       fetchClientes();
       fetchConductores();
       fetchProductos();
+      fetchObras();
     }
   }, [currentPlanta]);
 
@@ -77,23 +79,37 @@ const Pedidos: React.FC = () => {
     }
   };
 
+  const fetchObras = async () => {
+    if (!currentPlanta) return;
+    try {
+      const data = await api.getObras(currentPlanta);
+      setObras(data);
+    } catch (error) {
+      console.error('Error al cargar obras:', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!currentPlanta) return;
 
     try {
-      const productosConSubtotal = formData.productos.map(producto => ({
-        ...producto,
-        subtotal: producto.cantidad * producto.precioUnitario
-      }));
-
       const pedidoData = {
-        ...formData,
-        fechaPedido: new Date().toISOString(),
+        idCliente: formData.idCliente,
+        idObra: formData.idObra,
+        fechaEntrega: formData.fechaEntrega,
+        productos: formData.productos.map(p => ({
+          idProducto: p.idProducto,
+          cantidadM3: p.cantidadM3,
+          precioUnitario: p.precioUnitario,
+          observaciones: p.observaciones || '',
+        })),
+        idVehiculo: '',
+        idConductor: '',
+        horaEntrega: '',
         estado: EstadoPedido.PENDIENTE,
-        productos: productosConSubtotal,
-        total: productosConSubtotal.reduce((sum, p) => sum + p.subtotal, 0),
+        ubicacionActual: { latitud: '', longitud: '' },
       };
 
       await api.createPedido(currentPlanta, pedidoData);
@@ -139,14 +155,14 @@ const Pedidos: React.FC = () => {
       idCliente: '',
       idObra: '',
       fechaEntrega: '',
-      productos: [{ idProducto: '', cantidad: 1, precioUnitario: 0 }],
+      productos: [{ idProducto: '', cantidadM3: 1, precioUnitario: 0, observaciones: '' }],
     });
   };
 
   const addProducto = () => {
     setFormData({
       ...formData,
-      productos: [...formData.productos, { idProducto: '', cantidad: 1, precioUnitario: 0 }],
+      productos: [...formData.productos, { idProducto: '', cantidadM3: 1, precioUnitario: 0, observaciones: '' }],
     });
   };
 
@@ -159,11 +175,10 @@ const Pedidos: React.FC = () => {
     const newProductos = [...formData.productos];
     newProductos[index] = { ...newProductos[index], [field]: value };
     
-    // Actualizar precio unitario si se selecciona un producto
     if (field === 'idProducto') {
       const producto = productos.find(p => p.idProducto === value);
       if (producto) {
-        newProductos[index].precioUnitario = producto.precio;
+        newProductos[index].precioUnitario = producto.precioBase;
       }
     }
     
@@ -276,9 +291,9 @@ const Pedidos: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm text-gray-900">
+                      {/* <div className="text-sm text-gray-900">
                         Pedido: {new Date(pedido.fechaPedido).toLocaleDateString()}
-                      </div>
+                      </div> */}
                       <div className="text-sm text-gray-500">
                         Entrega: {new Date(pedido.fechaEntrega).toLocaleDateString()}
                       </div>
@@ -289,7 +304,7 @@ const Pedidos: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
-                      ${pedido.total.toLocaleString()}
+                      ${pedido.productos.reduce((sum, p) => sum + (p.cantidadM3 * p.precioUnitario), 0).toLocaleString()}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -363,7 +378,24 @@ const Pedidos: React.FC = () => {
                     ))}
                   </select>
                 </div>
-                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Obra</label>
+                  <select
+                    required
+                    value={formData.idObra}
+                    onChange={(e) => setFormData({ ...formData, idObra: e.target.value })}
+                    className="input-field"
+                  >
+                    <option value="">Seleccionar obra</option>
+                    {obras
+                      .filter((obra) => obra.idCliente === formData.idCliente)
+                      .map((obra) => (
+                        <option key={obra.idObra} value={obra.idObra}>
+                          {obra.nombreObra}
+                        </option>
+                      ))}
+                  </select>
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Fecha de Entrega</label>
                   <input
@@ -389,7 +421,7 @@ const Pedidos: React.FC = () => {
                       <option value="">Seleccionar producto</option>
                       {productos.map((p) => (
                         <option key={p.idProducto} value={p.idProducto}>
-                          {p.nombre} - ${p.precio}
+                          {p.nombreComercial} - ${p.precioBase}
                         </option>
                       ))}
                     </select>
@@ -397,10 +429,17 @@ const Pedidos: React.FC = () => {
                       type="number"
                       min="1"
                       required
-                      value={producto.cantidad}
-                      onChange={(e) => updateProducto(index, 'cantidad', parseInt(e.target.value))}
+                      value={producto.cantidadM3}
+                      onChange={(e) => updateProducto(index, 'cantidadM3', parseFloat(e.target.value))}
                       className="input-field w-20"
-                      placeholder="Cant."
+                      placeholder="m³"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Observaciones"
+                      value={producto.observaciones}
+                      onChange={(e) => updateProducto(index, 'observaciones', e.target.value)}
+                      className="input-field flex-1"
                     />
                     <button
                       type="button"
@@ -491,7 +530,8 @@ const Pedidos: React.FC = () => {
                     const prod = productos.find(p => p.idProducto === producto.idProducto);
                     return (
                       <div key={index} className="text-sm text-gray-900">
-                        {prod?.nombre} - {producto.cantidad} x ${producto.precioUnitario} = ${producto.subtotal}
+                        {prod?.nombreComercial} - {producto.cantidadM3} m³ x ${producto.precioUnitario} = ${(producto.cantidadM3 * producto.precioUnitario).toLocaleString()}
+                        {producto.observaciones && <span className="ml-2 text-xs text-gray-500">({producto.observaciones})</span>}
                       </div>
                     );
                   })}
@@ -500,7 +540,7 @@ const Pedidos: React.FC = () => {
               
               <div>
                 <label className="block text-sm font-medium text-gray-700">Total</label>
-                <p className="text-lg font-bold text-gray-900">${selectedPedido.total.toLocaleString()}</p>
+                <p className="text-lg font-bold text-gray-900">${selectedPedido.productos.reduce((sum, p) => sum + (p.cantidadM3 * p.precioUnitario), 0).toLocaleString()}</p>
               </div>
             </div>
           </div>

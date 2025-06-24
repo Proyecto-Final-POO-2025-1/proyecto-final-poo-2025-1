@@ -14,7 +14,7 @@ const Obras: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingObra, setEditingObra] = useState<Obra | null>(null);
   const [formData, setFormData] = useState({
-    nombre: '',
+    nombreObra: '',
     direccion: '',
     municipio: '',
     ubicacion: { latitud: '', longitud: '', descripcion: '' },
@@ -58,21 +58,16 @@ const Obras: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!currentPlanta) return;
-
-    // Convertir latitud y longitud a número
     const ubicacion = {
       latitud: Number(formData.ubicacion.latitud),
       longitud: Number(formData.ubicacion.longitud),
       descripcion: formData.ubicacion.descripcion,
     };
-
     const obraPayload = {
       ...formData,
       ubicacion,
     };
-
     try {
       if (editingObra) {
         const updatedObra = { ...editingObra, ...obraPayload };
@@ -82,7 +77,6 @@ const Obras: React.FC = () => {
         await api.createObra(currentPlanta, obraPayload);
         toast.success('Obra creada correctamente');
       }
-      
       setShowModal(false);
       setEditingObra(null);
       resetForm();
@@ -96,7 +90,7 @@ const Obras: React.FC = () => {
   const handleEdit = (obra: Obra) => {
     setEditingObra(obra);
     setFormData({
-      nombre: obra.nombre,
+      nombreObra: obra.nombreObra,
       direccion: obra.direccion,
       municipio: obra.municipio || '',
       ubicacion: {
@@ -126,7 +120,7 @@ const Obras: React.FC = () => {
 
   const resetForm = () => {
     setFormData({
-      nombre: '',
+      nombreObra: '',
       direccion: '',
       municipio: '',
       ubicacion: { latitud: '', longitud: '', descripcion: '' },
@@ -137,7 +131,7 @@ const Obras: React.FC = () => {
   };
 
   const filteredObras = obras.filter(obra =>
-    (obra.nombre?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (obra.nombreObra?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
     (obra.direccion?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
@@ -225,7 +219,7 @@ const Obras: React.FC = () => {
               {filteredObras.map((obra) => (
                 <tr key={obra.idObra} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{obra.nombre}</div>
+                    <div className="text-sm font-medium text-gray-900">{obra.nombreObra}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">{getClienteName(obra.idCliente)}</div>
@@ -284,12 +278,12 @@ const Obras: React.FC = () => {
             <h2 className="text-xl font-bold mb-6">{editingObra ? 'Editar Obra' : 'Nueva Obra'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre</label>
+                <label className="block text-sm font-medium text-gray-700">Nombre de Obra</label>
                 <input
                   type="text"
                   className="input-field"
-                  value={formData.nombre}
-                  onChange={e => setFormData({ ...formData, nombre: e.target.value })}
+                  value={formData.nombreObra}
+                  onChange={e => setFormData({ ...formData, nombreObra: e.target.value })}
                   required
                 />
               </div>

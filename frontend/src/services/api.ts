@@ -207,10 +207,14 @@ export const api = {
   },
 
   async updateEstadoPedido(idPlanta: string, idPedido: string, estado: EstadoPedido): Promise<void> {
-    await axios.put(`${API_BASE_URL}/${idPlanta}/administrador/pedidos/${idPedido}/estado`, { estado });
+    await axios.patch(`${API_BASE_URL}/${idPlanta}/administrador/pedidos/${idPedido}/estado`, null, {
+      params: { nuevoEstado: estado }
+    });
   },
 
   async asignarConductor(idPlanta: string, idPedido: string, idConductor: string): Promise<void> {
-    await axios.put(`${API_BASE_URL}/${idPlanta}/administrador/pedidos/${idPedido}/conductor`, { idConductor });
+    await axios.patch(`${API_BASE_URL}/${idPlanta}/administrador/pedidos/${idPedido}/conductor`, null, {
+      params: { idConductor }
+    });
   }
 }; 

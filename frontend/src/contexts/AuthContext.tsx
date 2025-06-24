@@ -31,9 +31,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [currentPlanta, setCurrentPlanta] = useState<string | null>(null);
 
+  // Persistencia en localStorage
+  useEffect(() => {
+    const storedAuthUser = localStorage.getItem('authenticatedUser');
+    const storedPlanta = localStorage.getItem('currentPlanta');
+    if (storedAuthUser) {
+      setAuthenticatedUser(JSON.parse(storedAuthUser));
+    }
+    if (storedPlanta) {
+      setCurrentPlanta(storedPlanta);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (authenticatedUser) {
+      localStorage.setItem('authenticatedUser', JSON.stringify(authenticatedUser));
+    } else {
+      localStorage.removeItem('authenticatedUser');
+    }
+  }, [authenticatedUser]);
+
+  useEffect(() => {
+    if (currentPlanta) {
+      localStorage.setItem('currentPlanta', currentPlanta);
+    } else {
+      localStorage.removeItem('currentPlanta');
+    }
+  }, [currentPlanta]);
+
   const verifyUserSetup = async (idPlanta: string): Promise<boolean> => {
     if (!user) return false;
-    
     try {
       const idToken = await user.getIdToken();
       const authUser = await api.login(idToken, idPlanta);
@@ -50,11 +77,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
-      setAuthenticatedUser(null);
-      setCurrentPlanta(null);
       setLoading(false);
+      // Si hay usuario y datos en localStorage, revalidar con backend
+      const storedPlanta = localStorage.getItem('currentPlanta');
+      if (user && storedPlanta) {
+        await verifyUserSetup(storedPlanta);
+      }
     });
-
     return unsubscribe;
   }, []);
 

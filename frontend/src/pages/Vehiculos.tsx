@@ -14,10 +14,11 @@ const Vehiculos: React.FC = () => {
   const [editingVehiculo, setEditingVehiculo] = useState<Vehiculo | null>(null);
   const [formData, setFormData] = useState({
     placa: '',
-    marca: '',
-    modelo: '',
-    capacidad: 0,
-    estado: 'DISPONIBLE',
+    tipo: '',
+    capacidadM3: 0,
+    activo: true,
+    ubicacionActual: { latitud: '', longitud: '', descripcion: '' },
+    idConductor: '',
   });
 
   useEffect(() => {
@@ -70,10 +71,15 @@ const Vehiculos: React.FC = () => {
     setEditingVehiculo(vehiculo);
     setFormData({
       placa: vehiculo.placa,
-      marca: vehiculo.marca,
-      modelo: vehiculo.modelo,
-      capacidad: vehiculo.capacidad,
-      estado: vehiculo.estado,
+      tipo: vehiculo.tipo,
+      capacidadM3: vehiculo.capacidadM3,
+      activo: vehiculo.activo,
+      ubicacionActual: {
+        latitud: vehiculo.ubicacionActual?.latitud?.toString() || '',
+        longitud: vehiculo.ubicacionActual?.longitud?.toString() || '',
+        descripcion: vehiculo.ubicacionActual?.descripcion || '',
+      },
+      idConductor: vehiculo.idConductor || '',
     });
     setShowModal(true);
   };
@@ -94,17 +100,17 @@ const Vehiculos: React.FC = () => {
   const resetForm = () => {
     setFormData({
       placa: '',
-      marca: '',
-      modelo: '',
-      capacidad: 0,
-      estado: 'DISPONIBLE',
+      tipo: '',
+      capacidadM3: 0,
+      activo: true,
+      ubicacionActual: { latitud: '', longitud: '', descripcion: '' },
+      idConductor: '',
     });
   };
 
   const filteredVehiculos = vehiculos.filter(vehiculo =>
-    vehiculo.placa.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    vehiculo.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    vehiculo.modelo.toLowerCase().includes(searchTerm.toLowerCase())
+    (vehiculo.placa?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (vehiculo.tipo?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
   const getEstadoColor = (estado: string) => {
@@ -168,6 +174,9 @@ const Vehiculos: React.FC = () => {
                   Placa
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tipo
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Capacidad
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -183,20 +192,20 @@ const Vehiculos: React.FC = () => {
                 <tr key={vehiculo.idVehiculo} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{vehiculo.marca}</div>
-                      <div className="text-sm text-gray-500">{vehiculo.modelo}</div>
+                      <div className="text-sm font-medium text-gray-900">{vehiculo.tipo}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{vehiculo.placa}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{vehiculo.capacidad} m³</div>
+                    <div className="text-sm text-gray-900">{vehiculo.tipo}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getEstadoColor(vehiculo.estado)}`}>
-                      {vehiculo.estado.replace('_', ' ')}
-                    </span>
+                    <div className="text-sm text-gray-900">{vehiculo.capacidadM3} m³</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${vehiculo.activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{vehiculo.activo ? 'Activo' : 'Inactivo'}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end gap-2">
@@ -254,23 +263,12 @@ const Vehiculos: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700">Marca</label>
+                <label className="block text-sm font-medium text-gray-700">Tipo</label>
                 <input
                   type="text"
                   required
-                  value={formData.marca}
-                  onChange={(e) => setFormData({ ...formData, marca: e.target.value })}
-                  className="input-field"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Modelo</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.modelo}
-                  onChange={(e) => setFormData({ ...formData, modelo: e.target.value })}
+                  value={formData.tipo}
+                  onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
                   className="input-field"
                 />
               </div>
@@ -282,23 +280,21 @@ const Vehiculos: React.FC = () => {
                   step="0.1"
                   min="0"
                   required
-                  value={formData.capacidad}
-                  onChange={(e) => setFormData({ ...formData, capacidad: parseFloat(e.target.value) })}
+                  value={formData.capacidadM3}
+                  onChange={(e) => setFormData({ ...formData, capacidadM3: parseFloat(e.target.value) })}
                   className="input-field"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700">Estado</label>
+                <label className="block text-sm font-medium text-gray-700">Activo</label>
                 <select
-                  value={formData.estado}
-                  onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
+                  value={formData.activo ? 'Activo' : 'Inactivo'}
+                  onChange={(e) => setFormData({ ...formData, activo: e.target.value === 'Activo' })}
                   className="input-field"
                 >
-                  <option value="DISPONIBLE">Disponible</option>
-                  <option value="EN_USO">En uso</option>
-                  <option value="MANTENIMIENTO">Mantenimiento</option>
-                  <option value="FUERA_DE_SERVICIO">Fuera de servicio</option>
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
                 </select>
               </div>
               

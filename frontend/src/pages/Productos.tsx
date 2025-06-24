@@ -13,11 +13,10 @@ const Productos: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingProducto, setEditingProducto] = useState<Producto | null>(null);
   const [formData, setFormData] = useState({
-    nombre: '',
+    idProducto: '',
+    nombreComercial: '',
     descripcion: '',
-    precio: 0,
-    stock: 0,
-    unidad: 'm³',
+    precioBase: 0,
   });
 
   useEffect(() => {
@@ -52,7 +51,8 @@ const Productos: React.FC = () => {
         await api.updateProducto(currentPlanta, updatedProducto);
         toast.success('Producto actualizado correctamente');
       } else {
-        await api.createProducto(currentPlanta, formData);
+        const { idProducto, ...productoData } = formData;
+        await api.createProducto(currentPlanta, productoData);
         toast.success('Producto creado correctamente');
       }
       
@@ -69,11 +69,10 @@ const Productos: React.FC = () => {
   const handleEdit = (producto: Producto) => {
     setEditingProducto(producto);
     setFormData({
-      nombre: producto.nombre,
+      idProducto: producto.idProducto,
+      nombreComercial: producto.nombreComercial,
       descripcion: producto.descripcion,
-      precio: producto.precio,
-      stock: producto.stock,
-      unidad: producto.unidad,
+      precioBase: producto.precioBase,
     });
     setShowModal(true);
   };
@@ -93,17 +92,16 @@ const Productos: React.FC = () => {
 
   const resetForm = () => {
     setFormData({
-      nombre: '',
+      idProducto: '',
+      nombreComercial: '',
       descripcion: '',
-      precio: 0,
-      stock: 0,
-      unidad: 'm³',
+      precioBase: 0,
     });
   };
 
   const filteredProductos = productos.filter(producto =>
-    producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
+    (producto.nombreComercial?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (producto.descripcion?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -146,16 +144,16 @@ const Productos: React.FC = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Producto
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Descripción
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Precio
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Stock
+                  Precio Base
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Acciones
@@ -166,26 +164,18 @@ const Productos: React.FC = () => {
               {filteredProductos.map((producto) => (
                 <tr key={producto.idProducto} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{producto.nombre}</div>
+                    <div className="text-xs text-gray-500">{producto.idProducto}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">{producto.nombreComercial}</div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="text-sm text-gray-900 max-w-xs truncate">{producto.descripcion}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">
-                      ${producto.precio.toLocaleString()} / {producto.unidad}
+                      ${producto.precioBase.toLocaleString()}
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      producto.stock > 10 
-                        ? 'bg-green-100 text-green-800' 
-                        : producto.stock > 0 
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {producto.stock} {producto.unidad}
-                    </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end gap-2">
@@ -231,76 +221,58 @@ const Productos: React.FC = () => {
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-4">
+              {editingProducto && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">ID Producto</label>
+                  <input
+                    type="text"
+                    value={formData.idProducto}
+                    disabled
+                    className="input-field bg-gray-100 cursor-not-allowed"
+                  />
+                </div>
+              )}
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nombre</label>
+                <label className="block text-sm font-medium text-gray-700">Nombre Comercial</label>
                 <input
                   type="text"
                   required
-                  value={formData.nombre}
-                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                  value={formData.nombreComercial}
+                  onChange={e => setFormData({ ...formData, nombreComercial: e.target.value })}
                   className="input-field"
                 />
               </div>
-              
               <div>
                 <label className="block text-sm font-medium text-gray-700">Descripción</label>
-                <textarea
+                <input
+                  type="text"
                   required
                   value={formData.descripcion}
-                  onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+                  onChange={e => setFormData({ ...formData, descripcion: e.target.value })}
                   className="input-field"
-                  rows={3}
                 />
               </div>
-              
               <div>
-                <label className="block text-sm font-medium text-gray-700">Precio</label>
+                <label className="block text-sm font-medium text-gray-700">Precio Base</label>
                 <input
                   type="number"
+                  min="0"
                   step="0.01"
-                  min="0"
                   required
-                  value={formData.precio}
-                  onChange={(e) => setFormData({ ...formData, precio: parseFloat(e.target.value) })}
+                  value={formData.precioBase}
+                  onChange={e => setFormData({ ...formData, precioBase: parseFloat(e.target.value) })}
                   className="input-field"
                 />
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Stock</label>
-                <input
-                  type="number"
-                  min="0"
-                  required
-                  value={formData.stock}
-                  onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) })}
-                  className="input-field"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Unidad</label>
-                <select
-                  value={formData.unidad}
-                  onChange={(e) => setFormData({ ...formData, unidad: e.target.value })}
-                  className="input-field"
-                >
-                  <option value="m³">Metros cúbicos (m³)</option>
-                  <option value="kg">Kilogramos (kg)</option>
-                  <option value="l">Litros (l)</option>
-                  <option value="unidad">Unidad</option>
-                </select>
-              </div>
-              
-              <div className="flex justify-end gap-3 pt-4">
+              <div className="flex justify-end gap-2">
                 <button
                   type="button"
+                  className="btn-secondary"
                   onClick={() => {
                     setShowModal(false);
                     setEditingProducto(null);
                     resetForm();
                   }}
-                  className="btn-secondary"
                 >
                   Cancelar
                 </button>

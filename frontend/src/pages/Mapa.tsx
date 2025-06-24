@@ -57,7 +57,6 @@ const Mapa: React.FC = () => {
             ubicacion: {
               latitud: 4.7110,
               longitud: -74.0721,
-              timestamp: new Date().toISOString()
             }
           },
           {
@@ -77,7 +76,6 @@ const Mapa: React.FC = () => {
             ubicacion: {
               latitud: 4.7210,
               longitud: -74.0821,
-              timestamp: new Date().toISOString()
             }
           },
           {
@@ -97,7 +95,6 @@ const Mapa: React.FC = () => {
             ubicacion: {
               latitud: 4.7010,
               longitud: -74.0621,
-              timestamp: new Date().toISOString()
             }
           }
         ];
@@ -253,7 +250,7 @@ const Mapa: React.FC = () => {
                         )}
                         <div className="mt-2 pt-2 border-t text-xs text-gray-500">
                           <Calendar className="inline w-3 h-3 mr-1" />
-                          Última actualización: {vehiculo.ubicacion.timestamp ? formatTimestamp(vehiculo.ubicacion.timestamp) : 'N/A'}
+                          Última actualización: N/A
                         </div>
                       </div>
                     </div>
@@ -314,7 +311,7 @@ const Mapa: React.FC = () => {
                     {vehiculo.ubicacion ? (
                       <div>
                         <div>{Number(vehiculo.ubicacion.latitud).toFixed(4)}, {Number(vehiculo.ubicacion.longitud).toFixed(4)}</div>
-                        <div className="text-xs">{vehiculo.ubicacion.timestamp ? formatTimestamp(vehiculo.ubicacion.timestamp) : 'N/A'}</div>
+                        <div className="text-xs">N/A</div>
                       </div>
                     ) : (
                       <span className="text-gray-400">Sin ubicación</span>

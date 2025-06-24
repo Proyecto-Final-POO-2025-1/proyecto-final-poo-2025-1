@@ -19,58 +19,56 @@ export interface Conductor extends Usuario {
 
 export interface Producto {
   idProducto: string;
-  nombre: string;
+  nombreComercial: string;
   descripcion: string;
-  precio: number;
-  stock: number;
-  unidad: string;
+  precioBase: number;
 }
 
 export interface Vehiculo {
   idVehiculo: string;
   placa: string;
-  marca: string;
-  modelo: string;
-  capacidad: number;
-  estado: string;
+  tipo: string;
+  capacidadM3: number;
+  activo: boolean;
+  ubicacionActual: Ubicacion;
+  idConductor: string;
 }
 
 export interface Obra {
   idObra: string;
-  nombre: string;
+  nombreObra: string;
   direccion: string;
   municipio: string;
   ubicacion: Ubicacion;
-  idCliente: string;
   estado: string;
   fechaInicio: string;
+  idCliente: string;
 }
 
 export interface Pedido {
   idPedido: string;
   idCliente: string;
   idObra: string;
-  idConductor?: string;
-  idVehiculo?: string;
-  fechaPedido: string;
-  fechaEntrega: string;
-  estado: EstadoPedido;
+  idVehiculo: string;
+  idConductor: string;
   productos: ProductoPedido[];
-  total: number;
+  fechaEntrega: string;
+  horaEntrega: string;
+  estado: EstadoPedido;
+  ubicacionActual: Ubicacion;
 }
 
 export interface ProductoPedido {
   idProducto: string;
-  cantidad: number;
+  cantidadM3: number;
   precioUnitario: number;
-  subtotal: number;
+  observaciones: string;
 }
 
 export interface Ubicacion {
   latitud: number | string;
   longitud: number | string;
   descripcion?: string;
-  timestamp?: string;
 }
 
 export interface VehiculoConConductor {

@@ -13,7 +13,7 @@ import {
   VehiculoConConductor
 } from '../types';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'https://f578-186-28-39-216.ngrok-free.app';
 
 // Configurar axios para incluir el token de Firebase en todas las peticiones
 axios.interceptors.request.use(async (config) => {

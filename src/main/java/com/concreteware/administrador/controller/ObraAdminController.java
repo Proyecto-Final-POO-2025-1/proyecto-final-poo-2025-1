@@ -18,6 +18,11 @@ public class ObraAdminController {
         this.obraService = obraService;
     }
 
+    @GetMapping
+    public List<Obra> listarObras(@PathVariable String idPlanta) {
+        return obraService.listarObras(idPlanta);
+    }
+
     @PostMapping
     public String crearObra(@RequestBody Obra obra, @PathVariable String idPlanta) {
         return obraService.crearObra(obra, idPlanta);

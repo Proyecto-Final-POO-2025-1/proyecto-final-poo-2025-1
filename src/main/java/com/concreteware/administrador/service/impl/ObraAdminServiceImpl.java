@@ -43,6 +43,24 @@ public class ObraAdminServiceImpl implements ObraAdminService {
     }
 
     @Override
+    public List<Obra> listarObras(String idPlanta) {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference obrasRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME);
+
+        ApiFuture<QuerySnapshot> future = obrasRef.get();
+
+        List<Obra> obras = new ArrayList<>();
+        try {
+            for (DocumentSnapshot doc : future.get().getDocuments()) {
+                obras.add(doc.toObject(Obra.class));
+            }
+            return obras;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Error al listar obras", e);
+        }
+    }
+
+    @Override
     public List<Obra> listarObras(String idCliente, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference obrasRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME);

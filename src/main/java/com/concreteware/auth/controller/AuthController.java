@@ -66,6 +66,57 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/setup-existing")
+    public ResponseEntity<?> configurarUsuarioExistente(@RequestBody SetupExistingUserRequest request, @PathVariable String idPlanta) {
+        try {
+            // Obtener el usuario existente de Firebase Auth
+            UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(request.getEmail());
+            
+            // Guardar tipoUsuario en Firestore
+            Firestore db = FirestoreClient.getFirestore();
+            db.collection("plantas").document(idPlanta).collection("usuarios").document(userRecord.getUid())
+                    .set(Map.of(
+                            "email", request.getEmail(),
+                            "tipoUsuario", request.getTipoUsuario()
+                    ));
+
+            return ResponseEntity.ok("Usuario configurado con UID: " + userRecord.getUid());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al configurar usuario: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/check-user/{email}")
+    public ResponseEntity<?> verificarUsuario(@PathVariable String email, @PathVariable String idPlanta) {
+        try {
+            // Obtener el usuario de Firebase Auth
+            UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
+            
+            // Verificar si existe en Firestore
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentSnapshot snapshot = db.collection("plantas").document(idPlanta).collection("usuarios").document(userRecord.getUid()).get().get();
+
+            if (snapshot.exists()) {
+                String tipoUsuario = snapshot.getString("tipoUsuario");
+                return ResponseEntity.ok(Map.of(
+                    "exists", true,
+                    "uid", userRecord.getUid(),
+                    "email", email,
+                    "tipoUsuario", tipoUsuario
+                ));
+            } else {
+                return ResponseEntity.ok(Map.of(
+                    "exists", false,
+                    "uid", userRecord.getUid(),
+                    "email", email,
+                    "message", "Usuario existe en Firebase pero no en Firestore"
+                ));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al verificar usuario: " + e.getMessage());
+        }
+    }
+
 }
 
 

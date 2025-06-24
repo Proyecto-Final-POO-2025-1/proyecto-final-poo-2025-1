@@ -34,7 +34,8 @@ public class ClienteAdminController {
     }
 
     @PutMapping("/{id}")
-    public Cliente actualizar(@RequestBody Cliente clienteActualizado, @PathVariable String idPlanta) {
+    public Cliente actualizar(@RequestBody Cliente clienteActualizado, @PathVariable String id, @PathVariable String idPlanta) {
+        clienteActualizado.setId(id);
         return clienteService.actualizarCliente(clienteActualizado, idPlanta);
     }
 

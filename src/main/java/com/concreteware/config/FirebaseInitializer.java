@@ -17,7 +17,7 @@ public class FirebaseInitializer {
     @PostConstruct
     public void initialize() {
         try {
-            InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("GOOGLE_CREDENTIALS_JSON");
+            InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("ServiceAccountKey.json");
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))

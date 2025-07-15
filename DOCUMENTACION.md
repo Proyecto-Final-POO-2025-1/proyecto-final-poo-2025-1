@@ -125,6 +125,6 @@ Desplegar Concreteware es sencillo si se siguen los pasos recomendados:
 - Documenta cualquier cambio relevante para facilitar el mantenimiento futuro.
 
 ## Créditos y Contacto
-Concreteware es el resultado del esfuerzo y la pasión de un equipo comprometido con la excelencia tecnológica. Si tienes dudas, sugerencias o necesitas soporte, no dudes en escribirnos a **info@concreteware.com**.
+Concreteware es el resultado del esfuerzo y la pasión de un equipo comprometido con la excelencia tecnológica. Si tienes dudas, sugerencias o necesitas soporte, no dudes en escribirnos a **cruedas@unal.edu.co**.
 
 Esta documentación es tu guía para entender, desplegar y evolucionar Concreteware. Siéntete libre de mejorarla y compartirla. ¡Gracias por confiar en nuestro trabajo y por contribuir a la transformación digital de la industria del concreto! 

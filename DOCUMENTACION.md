@@ -202,8 +202,3 @@ El usuario recibe notificaciones visuales ante eventos importantes: nuevos pedid
 
 ### 7.13. Seguridad y cierre de sesión
 El usuario puede cerrar sesión en cualquier momento. El sistema protege los datos y restringe el acceso a usuarios no autenticados.
-
-## 8. Créditos y contacto
-Concreteware es el resultado del trabajo de un equipo comprometido con la excelencia tecnológica. Para soporte, sugerencias o contribuciones, contacta a info@concreteware.com.
-
-Esta documentación es tu guía para entender, desplegar y evolucionar Concreteware. Siéntete libre de mejorarla y compartirla. ¡Gracias por confiar en nuestro trabajo y por contribuir a la transformación digital de la industria del concreto! 

@@ -48,12 +48,12 @@ El mantenimiento contempla la corrección de errores, la adaptación a nuevos re
 
 ## 4. Entorno operativo
 - **Base de datos:** Firestore (Firebase), NoSQL, escalable y en la nube.
-- **Backend:** Java 21+, Spring Boot, ejecutable en cualquier servidor compatible (VPS, Heroku, Docker, etc.).
+- **Backend:** Java 17+, Spring Boot, ejecutable en cualquier servidor compatible (VPS, Heroku, Docker, etc.).
 - **Frontend:** React 18, TypeScript, ejecutable en cualquier navegador moderno.
 - **Despliegue:** Firebase Hosting para frontend, backend en servidor propio o en la nube.
 - **Requisitos mínimos:**
   - Node.js 16+ y npm para frontend.
-  - Java 21+ y Maven para backend.
+  - Java 17+ y Maven para backend.
   - Acceso a internet para integración con Firebase.
 
 ## 5. Requerimientos funcionales

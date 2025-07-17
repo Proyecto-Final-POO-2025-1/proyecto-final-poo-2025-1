@@ -1,6 +1,4 @@
 package com.concreteware.config;
-
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -8,10 +6,10 @@ import org.springframework.web.servlet.config.annotation.*;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Cambia esto según tus necesidades
-                .allowedOriginPatterns("*")         // O pon sólo tu origen: http://localhost:54263
-                .allowedMethods("GET","POST","PUT","DELETE", "PATCH", "OPTIONS") // Métodos permitidos
-                .allowedHeaders("*")         // O especifica los headers permitidos
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET","POST","PUT","DELETE", "PATCH", "OPTIONS")
+                .allowedHeaders("*")
                 .allowCredentials(true);
     }
 }

@@ -10,10 +10,20 @@ import {
   Planta,
   EstadoPedido,
   AuthenticatedUser,
-  VehiculoConConductor
+  VehiculoConConductor,
+  Ubicacion
 } from '../types';
 
-const API_BASE_URL = 'https://f578-186-28-39-216.ngrok-free.app';
+export interface ClienteConPasswordDTO {
+  cliente: Cliente;
+  password: string;
+}
+export interface ConductorConPasswordDTO {
+  conductor: Conductor;
+  password: string;
+}
+
+const API_BASE_URL = 'https://concreteware-backend.azurewebsites.net';
 
 // Configurar axios para incluir el token de Firebase en todas las peticiones
 axios.interceptors.request.use(async (config) => {
@@ -68,7 +78,7 @@ export const api = {
     return response.data;
   },
 
-  async createCliente(idPlanta: string, cliente: Omit<Cliente, 'id'>): Promise<Cliente> {
+  async createCliente(idPlanta: string, cliente: Omit<Cliente, 'id'>): Promise<ClienteConPasswordDTO> {
     const response = await axios.post(`${API_BASE_URL}/${idPlanta}/administrador/clientes`, cliente);
     return response.data;
   },
@@ -93,7 +103,7 @@ export const api = {
     return response.data;
   },
 
-  async createConductor(idPlanta: string, conductor: Omit<Conductor, 'id'>): Promise<string> {
+  async createConductor(idPlanta: string, conductor: Omit<Conductor, 'id'>): Promise<ConductorConPasswordDTO> {
     const response = await axios.post(`${API_BASE_URL}/${idPlanta}/administrador/conductores`, conductor);
     return response.data;
   },
@@ -216,5 +226,25 @@ export const api = {
     await axios.patch(`${API_BASE_URL}/${idPlanta}/administrador/pedidos/${idPedido}/conductor`, null, {
       params: { idConductor }
     });
+  },
+
+  async updatePedidoCantidad(idPlanta: string, idPedido: string, productos: any[]): Promise<void> {
+    await axios.patch(`${API_BASE_URL}/${idPlanta}/administrador/pedidos/${idPedido}/productos`, productos);
+  },
+
+  async updateUbicacionConductor(idPlanta: string, idConductor: string, ubicacion: { latitud: number; longitud: number; descripcion?: string }): Promise<void> {
+    // Ajusta la URL según el backend real
+    await axios.patch(`${API_BASE_URL}/${idPlanta}/conductor/${idConductor}/ubicacion`, ubicacion);
+  },
+
+  async updateUbicacionPedidoConductor(idPlanta: string, idPedido: string, ubicacion: Ubicacion): Promise<void> {
+    await axios.patch(`${API_BASE_URL}/${idPlanta}/conductor/pedidos/${idPedido}/ubicacion`, ubicacion);
+  },
+
+  async getPedidosCliente(idPlanta: string, idCliente: string): Promise<Pedido[]> {
+    const response = await axios.get(`${API_BASE_URL}/${idPlanta}/cliente/pedidos`, {
+      params: { idCliente }
+    });
+    return response.data;
   }
 }; 

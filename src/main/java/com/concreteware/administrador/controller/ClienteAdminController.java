@@ -2,6 +2,7 @@ package com.concreteware.administrador.controller;
 
 import com.concreteware.administrador.service.ClienteAdminService;
 import com.concreteware.core.model.Cliente;
+import com.concreteware.administrador.dto.ClienteConPasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class ClienteAdminController {
     }
 
     @PostMapping
-    public Cliente crearCliente(@RequestBody Cliente cliente, @PathVariable String idPlanta) {
+    public ClienteConPasswordDTO crearCliente(@RequestBody Cliente cliente, @PathVariable String idPlanta) {
         return clienteService.crearCliente(cliente, idPlanta);
     }
 

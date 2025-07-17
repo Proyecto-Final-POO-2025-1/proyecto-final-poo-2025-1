@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Layout from './components/Layout';
@@ -12,10 +12,27 @@ import Vehiculos from './pages/Vehiculos';
 import Obras from './pages/Obras';
 import Pedidos from './pages/Pedidos';
 import Mapa from './pages/Mapa';
+import AdminDashboard from './pages/AdminDashboard';
+import ClienteDashboard from './pages/ClienteDashboard';
+import ClientePedidos from './pages/ClientePedidos';
+import ClienteMapa from './pages/ClienteMapa';
+import ConductorDashboard from './pages/ConductorDashboard';
+import ConductorPedidos from './pages/ConductorPedidos';
+import ConductorChecklist from './pages/ConductorChecklist';
+import ConductorNovedades from './pages/ConductorNovedades';
 
-// Componente para proteger rutas
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Componente para proteger rutas y redirigir según tipo de usuario
+const ProtectedRoute: React.FC<{ allowedRoles: string[]; children: React.ReactNode }> = ({ allowedRoles, children }) => {
   const { user, authenticatedUser, loading } = useAuth();
+
+  // Permitir equivalencia ADMINISTRADOR <-> ADMIN
+  const getNormalizedRole = (role?: string) => {
+    if (!role) return undefined;
+    if (role.toUpperCase() === 'ADMIN' || role.toUpperCase() === 'ADMINISTRADOR') return 'ADMIN';
+    if (role.toUpperCase() === 'CLIENTE') return 'CLIENTE';
+    if (role.toUpperCase() === 'CONDUCTOR') return 'CONDUCTOR';
+    return role;
+  };
 
   if (loading) {
     return (
@@ -25,106 +42,93 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     );
   }
 
-  // Si no hay usuario autenticado, redirigir a login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Si hay usuario de Firebase pero no está configurado en el sistema, redirigir a setup
   if (user && !authenticatedUser) {
     return <Navigate to="/setup" replace />;
+  }
+
+  const normalizedRole = getNormalizedRole(authenticatedUser?.tipoUsuario);
+  const normalizedAllowedRoles = allowedRoles.map(getNormalizedRole);
+
+  if (authenticatedUser && !normalizedAllowedRoles.includes(normalizedRole)) {
+    // Redirigir al dashboard correcto si intenta acceder a otro
+    if (normalizedRole === 'ADMIN') return <Navigate to="/admin" replace />;
+    if (normalizedRole === 'CLIENTE') return <Navigate to="/cliente" replace />;
+    if (normalizedRole === 'CONDUCTOR') return <Navigate to="/conductor" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;
 };
 
 const AppRoutes: React.FC = () => {
-  const { user } = useAuth();
+  const { authenticatedUser } = useAuth();
+
+  // Redirección tras login según tipo de usuario
+  const getDefaultRoute = () => {
+    if (!authenticatedUser) return '/login';
+    const normalizedRole = authenticatedUser.tipoUsuario?.toUpperCase();
+    if (normalizedRole === 'ADMIN' || normalizedRole === 'ADMINISTRADOR') return '/admin';
+    if (normalizedRole === 'CLIENTE') return '/cliente';
+    if (normalizedRole === 'CONDUCTOR') return '/conductor';
+    return '/login';
+  };
 
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/setup" element={<Setup />} />
+      <Route path="/" element={<Navigate to={getDefaultRoute()} replace />} />
+
+      {/* Dashboard Administrador */}
       <Route
-        path="/"
+        path="/admin"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Navigate to="/clientes" replace />
-            </Layout>
+          <ProtectedRoute allowedRoles={["ADMINISTRADOR"]}>
+            <AdminDashboard />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="productos" element={<Productos />} />
+        <Route path="pedidos" element={<Pedidos />} />
+        <Route path="vehiculos" element={<Vehiculos />} />
+        <Route path="obras" element={<Obras />} />
+        <Route path="clientes" element={<Clientes />} />
+        <Route path="conductores" element={<Conductores />} />
+        <Route index element={<div>Bienvenido al panel de administración de ConcreteWare.</div>} />
+      </Route>
+
+      {/* Dashboard Cliente */}
       <Route
-        path="/clientes"
+        path="/cliente/*"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Clientes />
-            </Layout>
+          <ProtectedRoute allowedRoles={["CLIENTE"]}>
+            <ClienteDashboard />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="pedidos" element={<ClientePedidos />} />
+        <Route path="mapa" element={<ClienteMapa />} />
+        <Route index element={<div>Bienvenido al panel de cliente.</div>} />
+      </Route>
+
+      {/* Dashboard Conductor */}
       <Route
-        path="/conductores"
+        path="/conductor"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Conductores />
-            </Layout>
+          <ProtectedRoute allowedRoles={["CONDUCTOR"]}>
+            <ConductorDashboard />
           </ProtectedRoute>
         }
-      />
-      <Route
-        path="/productos"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Productos />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/vehiculos"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Vehiculos />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/obras"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Obras />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/pedidos"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Pedidos />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/mapa"
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Mapa />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
+      >
+        <Route path="pedidos" element={<ConductorPedidos />} />
+        <Route path="checklist" element={<ConductorChecklist />} />
+        <Route path="novedad" element={<ConductorNovedades />} />
+        <Route index element={<div>Bienvenido al panel de conductor.</div>} />
+      </Route>
     </Routes>
   );
 };

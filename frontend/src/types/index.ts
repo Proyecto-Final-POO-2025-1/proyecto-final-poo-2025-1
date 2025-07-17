@@ -96,7 +96,7 @@ export interface Planta {
 
 export enum EstadoPedido {
   PENDIENTE = "PENDIENTE",
-  EN_PROCESO = "EN_PROCESO",
+  CARGANDO = "CARGANDO",
   EN_CAMINO = "EN_CAMINO",
   ENTREGADO = "ENTREGADO",
   CANCELADO = "CANCELADO"

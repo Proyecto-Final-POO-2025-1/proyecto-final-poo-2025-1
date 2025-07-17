@@ -2,6 +2,7 @@
   "name": "concreteware-admin-frontend",
   "version": "1.0.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@types/leaflet": "^1.9.18",
     "@types/node": "^16.18.0",

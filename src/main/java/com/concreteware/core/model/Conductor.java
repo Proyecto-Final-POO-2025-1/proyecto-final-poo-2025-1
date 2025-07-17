@@ -3,6 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import com.concreteware.core.model.Ubicacion;
 
 @Data
 @NoArgsConstructor
@@ -12,4 +13,5 @@ public class Conductor extends Usuario {
 
     private String licenciaConduccion;
     private boolean activo;
+    private Ubicacion ubicacionActual;
 }

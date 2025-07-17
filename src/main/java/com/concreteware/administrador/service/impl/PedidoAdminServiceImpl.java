@@ -2,6 +2,7 @@ package com.concreteware.administrador.service.impl;
 
 import com.concreteware.administrador.service.PedidoAdminService;
 import com.concreteware.core.model.Pedido;
+import com.concreteware.core.model.ProductoPedido;
 import com.concreteware.common.enums.EstadoPedido;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
@@ -80,6 +81,25 @@ public class PedidoAdminServiceImpl implements PedidoAdminService {
             future.get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException("Error al asignar conductor al pedido", e);
+        }
+    }
+
+    @Override
+    public Pedido actualizarProductosPedido(String idPedido, List<ProductoPedido> productos, String idPlanta) {
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference pedidoRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(idPedido);
+        try {
+            DocumentSnapshot doc = pedidoRef.get().get();
+            if (!doc.exists()) {
+                throw new RuntimeException("Pedido no encontrado");
+            }
+            Pedido pedido = doc.toObject(Pedido.class);
+            pedido.setProductos(productos);
+            ApiFuture<WriteResult> future = pedidoRef.set(pedido);
+            future.get();
+            return pedido;
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Error al actualizar productos del pedido", e);
         }
     }
 }

@@ -205,7 +205,7 @@ const Pedidos: React.FC = () => {
     switch (estado) {
       case EstadoPedido.PENDIENTE:
         return 'bg-yellow-100 text-yellow-800';
-      case EstadoPedido.EN_PROCESO:
+      case EstadoPedido.CARGANDO:
         return 'bg-blue-100 text-blue-800';
       case EstadoPedido.EN_CAMINO:
         return 'bg-purple-100 text-purple-800';
@@ -304,12 +304,12 @@ const Pedidos: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
-                      ${pedido.productos.reduce((sum, p) => sum + (p.cantidadM3 * p.precioUnitario), 0).toLocaleString()}
+                      ${(pedido.productos ?? []).reduce((sum, p) => sum + (p.cantidadM3 * p.precioUnitario), 0).toLocaleString()}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getEstadoColor(pedido.estado)}`}>
-                      {pedido.estado.replace('_', ' ')}
+                      {(pedido.estado ?? '').replace('_', ' ')}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -330,7 +330,7 @@ const Pedidos: React.FC = () => {
                       >
                         {Object.values(EstadoPedido).map((estado) => (
                           <option key={estado} value={estado}>
-                            {estado.replace('_', ' ')}
+                            {(estado ?? '').replace('_', ' ')}
                           </option>
                         ))}
                       </select>
@@ -540,7 +540,7 @@ const Pedidos: React.FC = () => {
               
               <div>
                 <label className="block text-sm font-medium text-gray-700">Total</label>
-                <p className="text-lg font-bold text-gray-900">${selectedPedido.productos.reduce((sum, p) => sum + (p.cantidadM3 * p.precioUnitario), 0).toLocaleString()}</p>
+                <p className="text-lg font-bold text-gray-900">${(selectedPedido.productos ?? []).reduce((sum, p) => sum + (p.cantidadM3 * p.precioUnitario), 0).toLocaleString()}</p>
               </div>
             </div>
           </div>

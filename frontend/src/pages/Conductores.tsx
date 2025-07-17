@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { Conductor } from '../types';
 import { Plus, Edit, Trash2, Search, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { ConductorConPasswordDTO } from '../services/api';
 
 type FormConductor = {
   nombre: string;
@@ -29,6 +30,9 @@ const Conductores: React.FC = () => {
     licenciaConduccion: '',
     activo: true,
   });
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [generatedPassword, setGeneratedPassword] = useState<string | null>(null);
+  const [createdEmail, setCreatedEmail] = useState<string | null>(null);
 
   useEffect(() => {
     if (currentPlanta) {
@@ -62,7 +66,10 @@ const Conductores: React.FC = () => {
         await api.updateConductor(currentPlanta, updatedConductor);
         toast.success('Conductor actualizado correctamente');
       } else {
-        await api.createConductor(currentPlanta, formData);
+        const response: ConductorConPasswordDTO = await api.createConductor(currentPlanta, formData);
+        setGeneratedPassword(response.password);
+        setCreatedEmail(response.conductor.email);
+        setShowPasswordModal(true);
         toast.success('Conductor creado correctamente');
       }
       
@@ -114,9 +121,9 @@ const Conductores: React.FC = () => {
   };
 
   const filteredConductores = conductores.filter(conductor =>
-    conductor.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    conductor.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    conductor.licenciaConduccion.toLowerCase().includes(searchTerm.toLowerCase())
+    (conductor.nombre ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (conductor.email ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (conductor.licenciaConduccion ?? '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -333,6 +340,47 @@ const Conductores: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para mostrar la contraseña generada */}
+      {showPasswordModal && generatedPassword && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-40 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <h3 className="text-lg font-bold mb-4 text-center text-primary-700">Conductor creado</h3>
+            <p className="mb-2 text-center">Correo: <span className="font-semibold">{createdEmail}</span></p>
+            <p className="mb-2 text-center">Contraseña generada:</p>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <input
+                type="text"
+                value={generatedPassword}
+                readOnly
+                className="input-field text-center font-mono w-48"
+              />
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(generatedPassword);
+                  toast.success('Contraseña copiada');
+                }}
+                className="btn-secondary px-2 py-1"
+              >
+                Copiar
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 text-center mb-4">Entrega esta contraseña al conductor. Solo se mostrará una vez.</p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setGeneratedPassword(null);
+                  setCreatedEmail(null);
+                }}
+                className="btn-primary"
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       )}

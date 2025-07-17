@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { Cliente } from '../types';
 import { Plus, Edit, Trash2, Search, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { ClienteConPasswordDTO } from '../services/api';
 
 const Clientes: React.FC = () => {
   const { currentPlanta } = useAuth();
@@ -21,6 +22,9 @@ const Clientes: React.FC = () => {
     nombreEmpresa: '',
     obrasAsociadasIds: [] as string[],
   });
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [generatedPassword, setGeneratedPassword] = useState<string | null>(null);
+  const [createdEmail, setCreatedEmail] = useState<string | null>(null);
 
   useEffect(() => {
     if (currentPlanta) {
@@ -54,7 +58,10 @@ const Clientes: React.FC = () => {
         await api.updateCliente(currentPlanta, updatedCliente);
         toast.success('Cliente actualizado correctamente');
       } else {
-        await api.createCliente(currentPlanta, formData);
+        const response: ClienteConPasswordDTO = await api.createCliente(currentPlanta, formData);
+        setGeneratedPassword(response.password);
+        setCreatedEmail(response.cliente.email);
+        setShowPasswordModal(true);
         toast.success('Cliente creado correctamente');
       }
       
@@ -317,6 +324,47 @@ const Clientes: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para mostrar la contraseña generada */}
+      {showPasswordModal && generatedPassword && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-40 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <h3 className="text-lg font-bold mb-4 text-center text-primary-700">Cliente creado</h3>
+            <p className="mb-2 text-center">Correo: <span className="font-semibold">{createdEmail}</span></p>
+            <p className="mb-2 text-center">Contraseña generada:</p>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <input
+                type="text"
+                value={generatedPassword}
+                readOnly
+                className="input-field text-center font-mono w-48"
+              />
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(generatedPassword);
+                  toast.success('Contraseña copiada');
+                }}
+                className="btn-secondary px-2 py-1"
+              >
+                Copiar
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 text-center mb-4">Entrega esta contraseña al cliente. Solo se mostrará una vez.</p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  setShowPasswordModal(false);
+                  setGeneratedPassword(null);
+                  setCreatedEmail(null);
+                }}
+                className="btn-primary"
+              >
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       )}

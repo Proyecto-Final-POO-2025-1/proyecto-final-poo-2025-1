@@ -1,5 +1,6 @@
 package com.concreteware.administrador.controller;
 
+import com.concreteware.administrador.dto.ConductorConPasswordDTO;
 import com.concreteware.administrador.service.ConductorAdminService;
 import com.concreteware.core.model.Conductor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ConductorAdminController {
     }
 
     @PostMapping
-    public String crearConductor(@RequestBody Conductor conductor, @PathVariable String idPlanta) {
+    public ConductorConPasswordDTO crearConductor(@RequestBody Conductor conductor, @PathVariable String idPlanta) {
         return conductorService.crearConductor(conductor, idPlanta);
     }
 

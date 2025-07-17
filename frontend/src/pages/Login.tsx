@@ -14,25 +14,36 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { login } = useAuth();
+  const { login, authenticatedUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlantas = async () => {
       try {
         const plantasData = await api.getPlantas();
-        setPlantas(plantasData);
-        if (plantasData.length > 0) {
-          setIdPlanta(plantasData[0].idPlanta);
+        const plantasArray = Array.isArray(plantasData) ? plantasData : [];
+        setPlantas(plantasArray);
+        if (plantasArray.length > 0) {
+          setIdPlanta(plantasArray[0].idPlanta);
         }
       } catch (error) {
         console.error('Error al cargar plantas:', error);
+        setPlantas([]);
         setError('Error al cargar las plantas disponibles');
       }
     };
 
     fetchPlantas();
   }, []);
+
+  useEffect(() => {
+    if (authenticatedUser) {
+      const tipo = authenticatedUser.tipoUsuario?.toUpperCase();
+      if (tipo === 'ADMIN' || tipo === 'ADMINISTRADOR') navigate('/admin');
+      else if (tipo === 'CLIENTE') navigate('/cliente');
+      else if (tipo === 'CONDUCTOR') navigate('/conductor');
+    }
+  }, [authenticatedUser, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,8 +57,7 @@ const Login: React.FC = () => {
 
     try {
       await login(email, password, idPlanta);
-      console.log('✅ Login: Proceso completado exitosamente');
-      navigate('/clientes');
+      // La redirección se maneja en el useEffect
     } catch (error: any) {
       console.error('❌ Login: Error en el proceso');
       const status = error?.response?.status;
@@ -61,6 +71,9 @@ const Login: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Log de depuración para ver el valor de plantas en cada render
+  console.log('DEBUG plantas:', plantas, typeof plantas, Array.isArray(plantas));
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -90,11 +103,19 @@ const Login: React.FC = () => {
                 value={idPlanta}
                 onChange={(e) => setIdPlanta(e.target.value)}
               >
-                {plantas.map((planta) => (
-                  <option key={planta.idPlanta} value={planta.idPlanta}>
-                    {planta.nombre}
-                  </option>
-                ))}
+                {Array.isArray(plantas) ? (
+                  plantas.length > 0 ? (
+                    plantas.map((planta) => (
+                      <option key={planta.idPlanta} value={planta.idPlanta}>
+                        {planta.nombre}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">No hay plantas disponibles</option>
+                  )
+                ) : (
+                  <option value="">No hay plantas disponibles</option>
+                )}
               </select>
             </div>
             <div>

@@ -2,13 +2,20 @@ package com.concreteware.administrador.service.impl;
 
 import com.concreteware.administrador.service.ConductorAdminService;
 import com.concreteware.core.model.Conductor;
+import com.concreteware.common.utils.PasswordUtils;
+import com.concreteware.common.utils.EmailService;
+import com.concreteware.administrador.dto.ConductorConPasswordDTO;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -16,16 +23,39 @@ public class ConductorAdminServiceImpl implements ConductorAdminService {
 
     private static final String COLLECTION_NAME = "conductores";
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
-    public String crearConductor(Conductor conductor, String idPlanta) {
+    public ConductorConPasswordDTO crearConductor(Conductor conductor, String idPlanta) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document();
-        conductor.setId(docRef.getId());
-        ApiFuture<WriteResult> result = docRef.set(conductor);
         try {
+            // 1. Generar contraseña aleatoria
+            String password = PasswordUtils.generateRandomPassword();
+
+            // 2. Crear usuario en Firebase Auth
+            UserRecord.CreateRequest userRequest = new UserRecord.CreateRequest()
+                    .setEmail(conductor.getEmail())
+                    .setPassword(password);
+            UserRecord userRecord = FirebaseAuth.getInstance().createUser(userRequest);
+
+            // 3. Guardar en Firestore (colección usuarios)
+            db.collection("plantas").document(idPlanta).collection("usuarios").document(userRecord.getUid())
+                    .set(Map.of(
+                            "email", conductor.getEmail(),
+                            "tipoUsuario", "CONDUCTOR"
+                    ));
+
+            // 4. Guardar en colección conductores usando el uid de Firebase como id
+            DocumentReference docRef = db.collection("plantas").document(idPlanta).collection(COLLECTION_NAME).document(userRecord.getUid());
+            conductor.setId(userRecord.getUid());
+            ApiFuture<WriteResult> result = docRef.set(conductor);
             result.get();
-            return docRef.getId();
-        } catch (InterruptedException | ExecutionException e) {
+            ConductorConPasswordDTO dto = new ConductorConPasswordDTO();
+            dto.setConductor(conductor);
+            dto.setPassword(password);
+            return dto;
+        } catch (Exception e) {
             throw new RuntimeException("Error al crear conductor", e);
         }
     }

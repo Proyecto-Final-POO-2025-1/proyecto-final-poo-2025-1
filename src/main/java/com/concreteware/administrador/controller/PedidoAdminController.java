@@ -3,6 +3,7 @@ package com.concreteware.administrador.controller;
 import com.concreteware.administrador.service.PedidoAdminService;
 import com.concreteware.common.enums.EstadoPedido;
 import com.concreteware.core.model.Pedido;
+import com.concreteware.core.model.ProductoPedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +43,10 @@ public class PedidoAdminController {
     @PatchMapping("/{id}/conductor")
     public void asignarConductor(@PathVariable String id, @RequestParam String idConductor, @PathVariable String idPlanta) {
         pedidoService.asignarConductorYPedido(id, idConductor, idPlanta);
+    }
+
+    @PatchMapping("/{id}/productos")
+    public Pedido actualizarProductosPedido(@PathVariable String id, @RequestBody List<ProductoPedido> productos, @PathVariable String idPlanta) {
+        return pedidoService.actualizarProductosPedido(id, productos, idPlanta);
     }
 }

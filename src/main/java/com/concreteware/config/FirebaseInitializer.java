@@ -8,8 +8,9 @@ import com.google.cloud.firestore.Firestore;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class FirebaseInitializer {
@@ -17,7 +18,13 @@ public class FirebaseInitializer {
     @PostConstruct
     public void initialize() {
         try {
-            InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("ServiceAccountKey.json");
+            String firebaseConfigJson = System.getenv("FIREBASE_CONFIG");
+
+            if (firebaseConfigJson == null || firebaseConfigJson.isEmpty()) {
+                throw new RuntimeException("La variable de entorno FIREBASE_CONFIG no está definida");
+            }
+
+            InputStream serviceAccount = new ByteArrayInputStream(firebaseConfigJson.getBytes(StandardCharsets.UTF_8));
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
@@ -25,10 +32,11 @@ public class FirebaseInitializer {
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
+                System.out.println("✅ Firebase inicializado correctamente.");
             }
 
-        } catch (IOException e) {
-            throw new RuntimeException("Error inicializando Firebase", e);
+        } catch (Exception e) {
+            throw new RuntimeException("❌ Error inicializando Firebase", e);
         }
     }
 
